@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	examples "github.com/kellen-miller/grpc-gateway/v2/examples/internal/proto/examplepb"
-	"github.com/kellen-miller/grpc-gateway/v2/examples/internal/proto/standalone"
+	standalone "github.com/kellen-miller/grpc-gateway/v2/examples/internal/proto/standalone"
 	"github.com/kellen-miller/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"

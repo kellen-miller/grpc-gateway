@@ -7,6 +7,7 @@ import (
 
 	"github.com/kellen-miller/grpc-gateway/v2/internal/descriptor/openapiconfig"
 	"google.golang.org/protobuf/encoding/protojson"
+	"gopkg.in/yaml.v3"
 )
 
 func loadOpenAPIConfigFromYAML(

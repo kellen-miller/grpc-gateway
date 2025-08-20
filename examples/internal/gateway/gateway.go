@@ -6,10 +6,10 @@ import (
 	"net"
 	"net/http"
 
+	"github.com/kellen-miller/grpc-gateway/v2/examples/internal/proto/examplepb"
+	standalone "github.com/kellen-miller/grpc-gateway/v2/examples/internal/proto/standalone"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"github.com/kellen-miller/grpc-gateway/v2/examples/internal/proto/examplepb"
-	"github.com/kellen-miller/grpc-gateway/v2/examples/internal/proto/standalone"
 	gwruntime "github.com/kellen-miller/grpc-gateway/v2/runtime"
 	_ "google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc"

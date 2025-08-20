@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/kellen-miller/grpc-gateway/v2/internal/descriptor"
+	"gopkg.in/yaml.v3"
 )
 
 type param struct {

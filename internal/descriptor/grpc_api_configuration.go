@@ -8,6 +8,7 @@ import (
 
 	"github.com/kellen-miller/grpc-gateway/v2/internal/descriptor/apiconfig"
 	"google.golang.org/protobuf/encoding/protojson"
+	"gopkg.in/yaml.v3"
 )
 
 func loadGrpcAPIServiceFromYAML(yamlFileContents []byte, yamlSourceLogName string) (*apiconfig.GrpcAPIService, error) {
