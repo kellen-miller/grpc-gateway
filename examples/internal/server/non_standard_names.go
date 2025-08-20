@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 
-	examples "github.com/grpc-ecosystem/grpc-gateway/v2/examples/internal/proto/examplepb"
+	examples "github.com/kellen-miller/grpc-gateway/v2/examples/internal/proto/examplepb"
 	"google.golang.org/grpc/grpclog"
 )
 
@@ -15,7 +15,10 @@ func newNonStandardServer() examples.NonStandardServiceServer {
 	return new(nonStandardServer)
 }
 
-func (s *nonStandardServer) Update(ctx context.Context, msg *examples.NonStandardUpdateRequest) (*examples.NonStandardMessage, error) {
+func (s *nonStandardServer) Update(
+	ctx context.Context,
+	msg *examples.NonStandardUpdateRequest,
+) (*examples.NonStandardMessage, error) {
 	grpclog.Info(msg)
 
 	newMsg := &examples.NonStandardMessage{
@@ -27,7 +30,10 @@ func (s *nonStandardServer) Update(ctx context.Context, msg *examples.NonStandar
 	return newMsg, nil
 }
 
-func (s *nonStandardServer) UpdateWithJSONNames(ctx context.Context, msg *examples.NonStandardWithJSONNamesUpdateRequest) (*examples.NonStandardMessageWithJSONNames, error) {
+func (s *nonStandardServer) UpdateWithJSONNames(
+	ctx context.Context,
+	msg *examples.NonStandardWithJSONNamesUpdateRequest,
+) (*examples.NonStandardMessageWithJSONNames, error) {
 	grpclog.Info(msg)
 
 	newMsg := &examples.NonStandardMessageWithJSONNames{

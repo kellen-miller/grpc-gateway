@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/httprule"
+	"github.com/kellen-miller/grpc-gateway/v2/internal/httprule"
 	options "google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/protobuf/proto"
@@ -46,7 +46,8 @@ func (r *Registry) loadServices(file *File) error {
 				if r.generateUnboundMethods {
 					defaultOpts, err := defaultAPIOptions(svc, md)
 					if err != nil {
-						grpclog.Errorf("Failed to generate default HttpRule from %s.%s: %v", svc.GetName(), md.GetName(), err)
+						grpclog.Errorf("Failed to generate default HttpRule from %s.%s: %v", svc.GetName(),
+							md.GetName(), err)
 						return err
 					}
 					optsList = append(optsList, defaultOpts)
@@ -79,7 +80,11 @@ func (r *Registry) loadServices(file *File) error {
 	return nil
 }
 
-func (r *Registry) newMethod(svc *Service, md *descriptorpb.MethodDescriptorProto, optsList []*options.HttpRule) (*Method, error) {
+func (r *Registry) newMethod(
+	svc *Service,
+	md *descriptorpb.MethodDescriptorProto,
+	optsList []*options.HttpRule,
+) (*Method, error) {
 	requestType, err := r.LookupMsg(svc.File.GetPackage(), md.GetInputType())
 	if err != nil {
 		return nil, err
@@ -120,7 +125,8 @@ func (r *Registry) newMethod(svc *Service, md *descriptorpb.MethodDescriptorProt
 			httpMethod = "DELETE"
 			pathTemplate = opts.GetDelete()
 			if opts.Body != "" && !r.allowDeleteBody {
-				return nil, fmt.Errorf("must not set request body when http method is DELETE except allow_delete_body option is true: %s", md.GetName())
+				return nil, fmt.Errorf("must not set request body when http method is DELETE except allow_delete_body option is true: %s",
+					md.GetName())
 			}
 
 		case opts.GetPatch() != "":
@@ -190,7 +196,8 @@ func (r *Registry) newMethod(svc *Service, md *descriptorpb.MethodDescriptorProt
 		}
 		for _, additional := range opts.GetAdditionalBindings() {
 			if len(additional.AdditionalBindings) > 0 {
-				return fmt.Errorf("additional_binding in additional_binding not allowed: %s.%s", svc.GetName(), meth.GetName())
+				return fmt.Errorf("additional_binding in additional_binding not allowed: %s.%s", svc.GetName(),
+					meth.GetName())
 			}
 			b, err := newBinding(additional, len(meth.Bindings))
 			if err != nil {
@@ -266,7 +273,8 @@ func (r *Registry) newParam(meth *Method, path string) (Parameter, error) {
 				grpclog.Infoln("found well known aggregate type:", target)
 			}
 		} else {
-			return Parameter{}, fmt.Errorf("%s.%s: %s is a protobuf message type. Protobuf message types cannot be used as path parameters, use a scalar value type (such as string) instead", meth.Service.GetName(), meth.GetName(), path)
+			return Parameter{}, fmt.Errorf("%s.%s: %s is a protobuf message type. Protobuf message types cannot be used as path parameters, use a scalar value type (such as string) instead",
+				meth.Service.GetName(), meth.GetName(), path)
 		}
 	}
 	return Parameter{

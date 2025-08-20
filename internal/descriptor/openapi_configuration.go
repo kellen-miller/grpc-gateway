@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor/openapiconfig"
+	"github.com/kellen-miller/grpc-gateway/v2/internal/descriptor/openapiconfig"
 	"google.golang.org/protobuf/encoding/protojson"
-	"gopkg.in/yaml.v3"
 )
 
-func loadOpenAPIConfigFromYAML(yamlFileContents []byte, yamlSourceLogName string) (*openapiconfig.OpenAPIConfig, error) {
+func loadOpenAPIConfigFromYAML(
+	yamlFileContents []byte,
+	yamlSourceLogName string,
+) (*openapiconfig.OpenAPIConfig, error) {
 	var yamlContents interface{}
 	if err := yaml.Unmarshal(yamlFileContents, &yamlContents); err != nil {
 		return nil, fmt.Errorf("failed to parse gRPC API Configuration from YAML in %q: %w", yamlSourceLogName, err)
@@ -34,7 +36,11 @@ func loadOpenAPIConfigFromYAML(yamlFileContents []byte, yamlSourceLogName string
 	return &openapiConfiguration, nil
 }
 
-func registerOpenAPIOptions(registry *Registry, openAPIConfig *openapiconfig.OpenAPIConfig, yamlSourceLogName string) error {
+func registerOpenAPIOptions(
+	registry *Registry,
+	openAPIConfig *openapiconfig.OpenAPIConfig,
+	yamlSourceLogName string,
+) error {
 	if openAPIConfig.OpenapiOptions == nil {
 		// Nothing to do
 		return nil

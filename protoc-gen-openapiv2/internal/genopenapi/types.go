@@ -5,8 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
-	"gopkg.in/yaml.v3"
+	"github.com/kellen-miller/grpc-gateway/v2/internal/descriptor"
 )
 
 type param struct {

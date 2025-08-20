@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
+	"github.com/kellen-miller/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc/grpclog"
 )
 
@@ -151,7 +151,11 @@ func MustPattern(p Pattern, err error) Pattern {
 // MatchAndEscape will return an error if no Patterns matched or if a pattern
 // matched but contained malformed escape sequences. If successful, the function
 // returns a mapping from field paths to their captured values.
-func (p Pattern) MatchAndEscape(components []string, verb string, unescapingMode UnescapingMode) (map[string]string, error) {
+func (p Pattern) MatchAndEscape(
+	components []string,
+	verb string,
+	unescapingMode UnescapingMode,
+) (map[string]string, error) {
 	if p.verb != verb {
 		if p.verb != "" {
 			return nil, ErrNotMatch

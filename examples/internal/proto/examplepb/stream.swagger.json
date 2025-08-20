@@ -518,7 +518,7 @@
       "title": "A bit of everything",
       "externalDocs": {
         "description": "Find out more about ABitOfEverything",
-        "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+          "url": "https://github.com/kellen-miller/grpc-gateway"
       },
       "required": [
         "uuid",
@@ -545,7 +545,7 @@
       "title": "NumericEnum",
       "externalDocs": {
         "description": "Find out more about ABitOfEverything",
-        "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+          "url": "https://github.com/kellen-miller/grpc-gateway"
       },
       "x-a-bit-of-everything-foo": "bar"
     },

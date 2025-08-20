@@ -8,9 +8,9 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime/internal/examplepb"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
+	"github.com/kellen-miller/grpc-gateway/v2/runtime"
+	"github.com/kellen-miller/grpc-gateway/v2/runtime/internal/examplepb"
+	"github.com/kellen-miller/grpc-gateway/v2/utilities"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/testing/protocmp"
 	"google.golang.org/protobuf/types/known/durationpb"
@@ -176,20 +176,22 @@ func TestPopulateParameters(t *testing.T) {
 			},
 			filter: utilities.NewDoubleArray(nil),
 			want: &examplepb.Proto3Message{
-				FloatValue:         1.5,
-				DoubleValue:        2.5,
-				Int64Value:         -1,
-				Int32Value:         -2,
-				Uint64Value:        3,
-				Uint32Value:        4,
-				BoolValue:          true,
-				StringValue:        "str",
-				BytesValue:         []byte("abc123!?$*&()'-=@~"),
-				RepeatedValue:      []string{"a", "b", "c"},
-				OptionalValue:      &optionalStr,
-				RepeatedMessage:    []*wrapperspb.UInt64Value{{Value: 1}, {Value: 2}, {Value: 3}},
-				EnumValue:          examplepb.EnumValue_Y,
-				RepeatedEnum:       []examplepb.EnumValue{examplepb.EnumValue_Y, examplepb.EnumValue_Z, examplepb.EnumValue_X},
+				FloatValue:      1.5,
+				DoubleValue:     2.5,
+				Int64Value:      -1,
+				Int32Value:      -2,
+				Uint64Value:     3,
+				Uint32Value:     4,
+				BoolValue:       true,
+				StringValue:     "str",
+				BytesValue:      []byte("abc123!?$*&()'-=@~"),
+				RepeatedValue:   []string{"a", "b", "c"},
+				OptionalValue:   &optionalStr,
+				RepeatedMessage: []*wrapperspb.UInt64Value{{Value: 1}, {Value: 2}, {Value: 3}},
+				EnumValue:       examplepb.EnumValue_Y,
+				RepeatedEnum: []examplepb.EnumValue{
+					examplepb.EnumValue_Y, examplepb.EnumValue_Z, examplepb.EnumValue_X,
+				},
 				TimestampValue:     timePb,
 				DurationValue:      durationPb,
 				FieldmaskValue:     fieldmaskPb,
@@ -257,18 +259,20 @@ func TestPopulateParameters(t *testing.T) {
 			},
 			filter: utilities.NewDoubleArray(nil),
 			want: &examplepb.Proto3Message{
-				FloatValue:         1.5,
-				DoubleValue:        2.5,
-				Int64Value:         -1,
-				Int32Value:         -2,
-				Uint64Value:        3,
-				Uint32Value:        4,
-				BoolValue:          true,
-				StringValue:        "str",
-				BytesValue:         []byte("bytes"),
-				RepeatedValue:      []string{"a", "b", "c"},
-				EnumValue:          examplepb.EnumValue_Y,
-				RepeatedEnum:       []examplepb.EnumValue{examplepb.EnumValue_Y, examplepb.EnumValue_Z, examplepb.EnumValue_X},
+				FloatValue:    1.5,
+				DoubleValue:   2.5,
+				Int64Value:    -1,
+				Int32Value:    -2,
+				Uint64Value:   3,
+				Uint32Value:   4,
+				BoolValue:     true,
+				StringValue:   "str",
+				BytesValue:    []byte("bytes"),
+				RepeatedValue: []string{"a", "b", "c"},
+				EnumValue:     examplepb.EnumValue_Y,
+				RepeatedEnum: []examplepb.EnumValue{
+					examplepb.EnumValue_Y, examplepb.EnumValue_Z, examplepb.EnumValue_X,
+				},
 				TimestampValue:     timePb,
 				DurationValue:      durationPb,
 				FieldmaskValue:     fieldmaskPb,
@@ -294,8 +298,10 @@ func TestPopulateParameters(t *testing.T) {
 			},
 			filter: utilities.NewDoubleArray(nil),
 			want: &examplepb.Proto3Message{
-				EnumValue:        examplepb.EnumValue_Z,
-				RepeatedEnum:     []examplepb.EnumValue{examplepb.EnumValue_X, examplepb.EnumValue_Z, examplepb.EnumValue_X},
+				EnumValue: examplepb.EnumValue_Z,
+				RepeatedEnum: []examplepb.EnumValue{
+					examplepb.EnumValue_X, examplepb.EnumValue_Z, examplepb.EnumValue_X,
+				},
 				StructValueValue: structValueValues[2],
 				StructValue:      structValues[2],
 			},
@@ -532,13 +538,15 @@ func TestPopulateParameters(t *testing.T) {
 			err := runtime.PopulateQueryParameters(msg, spec.values, spec.filter)
 			if spec.wanterr != nil {
 				if err == nil || err.Error() != spec.wanterr.Error() {
-					t.Errorf("runtime.PopulateQueryParameters(msg, %v, %v) failed with %q; want error %q", spec.values, spec.filter, err, spec.wanterr)
+					t.Errorf("runtime.PopulateQueryParameters(msg, %v, %v) failed with %q; want error %q", spec.values,
+						spec.filter, err, spec.wanterr)
 				}
 				return
 			}
 
 			if err != nil {
-				t.Errorf("runtime.PopulateQueryParameters(msg, %v, %v) failed with %v; want success", spec.values, spec.filter, err)
+				t.Errorf("runtime.PopulateQueryParameters(msg, %v, %v) failed with %v; want success", spec.values,
+					spec.filter, err)
 				return
 			}
 			if diff := cmp.Diff(spec.want, msg, protocmp.Transform()); diff != "" {
@@ -622,7 +630,8 @@ func TestPopulateParametersWithFilters(t *testing.T) {
 		msg := spec.want.ProtoReflect().New().Interface()
 		err := runtime.PopulateQueryParameters(msg, spec.values, spec.filter)
 		if err != nil {
-			t.Errorf("runtime.PoplateQueryParameters(msg, %v, %v) failed with %v; want success", spec.values, spec.filter, err)
+			t.Errorf("runtime.PoplateQueryParameters(msg, %v, %v) failed with %v; want success", spec.values,
+				spec.filter, err)
 			continue
 		}
 		if got, want := msg, spec.want; !proto.Equal(got, want) {

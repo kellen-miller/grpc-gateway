@@ -9,16 +9,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/examples/internal/gateway"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/examples/internal/server"
-	gwruntime "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/kellen-miller/grpc-gateway/v2/examples/internal/gateway"
+	"github.com/kellen-miller/grpc-gateway/v2/examples/internal/server"
+	gwruntime "github.com/kellen-miller/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc/grpclog"
 )
 
 var (
 	endpoint   = flag.String("endpoint", "localhost:9090", "endpoint of the gRPC service")
 	network    = flag.String("network", "tcp", `one of "tcp" or "unix". Must be consistent to -endpoint`)
-	openAPIDir = flag.String("openapi_dir", "examples/internal/proto/examplepb", "path to the directory which contains OpenAPI definitions")
+	openAPIDir = flag.String("openapi_dir", "examples/internal/proto/examplepb",
+		"path to the directory which contains OpenAPI definitions")
 )
 
 func runGateway(ctx context.Context, addr string, opts ...gwruntime.ServeMuxOption) error {

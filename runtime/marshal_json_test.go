@@ -8,8 +8,8 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime/internal/examplepb"
+	"github.com/kellen-miller/grpc-gateway/v2/runtime"
+	"github.com/kellen-miller/grpc-gateway/v2/runtime/internal/examplepb"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/testing/protocmp"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -271,7 +271,10 @@ var (
 		{data: (*string)(nil), json: "null"},
 		{data: (*string)(nil), indent: defaultIndent, json: "null"},
 		{data: []interface{}{nil, "foo", -1.0, 1.234, true}, json: `[null,"foo",-1,1.234,true]`},
-		{data: []interface{}{nil, "foo", -1.0, 1.234, true}, indent: defaultIndent, json: "[\n  null,\n  \"foo\",\n  -1,\n  1.234,\n  true\n]"},
+		{
+			data: []interface{}{nil, "foo", -1.0, 1.234, true}, indent: defaultIndent,
+			json: "[\n  null,\n  \"foo\",\n  -1,\n  1.234,\n  true\n]",
+		},
 		{
 			data: map[string]interface{}{"bar": nil, "baz": -1.0, "fiz": 1.234, "foo": true},
 			json: `{"bar":null,"baz":-1,"fiz":1.234,"foo":true}`,
@@ -292,18 +295,22 @@ var (
 		},
 		{data: map[string]int{"FOO": 0, "BAR": -1}, json: "{\"BAR\":-1,\"FOO\":0}"},
 		{data: map[string]int{"FOO": 0, "BAR": -1}, indent: defaultIndent, json: "{\n  \"BAR\": -1,\n  \"FOO\": 0\n}"},
-		{data: struct {
-			A string
-			B int
-			C map[string]int
-		}{A: "Go", B: 3, C: map[string]int{"FOO": 0, "BAR": -1}},
-			json: "{\"A\":\"Go\",\"B\":3,\"C\":{\"BAR\":-1,\"FOO\":0}}"},
-		{data: struct {
-			A string
-			B int
-			C map[string]int
-		}{A: "Go", B: 3, C: map[string]int{"FOO": 0, "BAR": -1}}, indent: defaultIndent,
-			json: "{\n  \"A\": \"Go\",\n  \"B\": 3,\n  \"C\": {\n    \"BAR\": -1,\n    \"FOO\": 0\n  }\n}"},
+		{
+			data: struct {
+				A string
+				B int
+				C map[string]int
+			}{A: "Go", B: 3, C: map[string]int{"FOO": 0, "BAR": -1}},
+			json: "{\"A\":\"Go\",\"B\":3,\"C\":{\"BAR\":-1,\"FOO\":0}}",
+		},
+		{
+			data: struct {
+				A string
+				B int
+				C map[string]int
+			}{A: "Go", B: 3, C: map[string]int{"FOO": 0, "BAR": -1}}, indent: defaultIndent,
+			json:                                                             "{\n  \"A\": \"Go\",\n  \"B\": 3,\n  \"C\": {\n    \"BAR\": -1,\n    \"FOO\": 0\n  }\n}",
+		},
 	}
 	builtinKnownErrors = []struct {
 		data interface{}

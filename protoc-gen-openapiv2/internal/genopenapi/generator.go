@@ -10,9 +10,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
-	gen "github.com/grpc-ecosystem/grpc-gateway/v2/internal/generator"
-	openapioptions "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	"github.com/kellen-miller/grpc-gateway/v2/internal/descriptor"
+	gen "github.com/kellen-miller/grpc-gateway/v2/internal/generator"
+	openapioptions "github.com/kellen-miller/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	statuspb "google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/protobuf/proto"
@@ -20,7 +20,6 @@ import (
 	"google.golang.org/protobuf/types/descriptorpb"
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/pluginpb"
-	"gopkg.in/yaml.v3"
 )
 
 var errNoTargetService = errors.New("no target service defined in the file")
@@ -322,7 +321,8 @@ func extensionMarshalJSON(so interface{}, extensions []extension) ([]byte, error
 	// and thus render into what we want -- the JSON of openapiCore with the
 	// extensions appended.
 	fields := []reflect.StructField{
-		{ // embedded
+		{
+			// embedded
 			Name:      "Embedded",
 			Type:      reflect.TypeOf(so),
 			Anonymous: true,

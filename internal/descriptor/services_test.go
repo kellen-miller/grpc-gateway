@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/httprule"
+	"github.com/kellen-miller/grpc-gateway/v2/internal/httprule"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
@@ -24,7 +24,13 @@ func testExtractServices(t *testing.T, input []*descriptorpb.FileDescriptorProto
 	testExtractServicesWithRegistry(t, NewRegistry(), input, target, wantSvcs)
 }
 
-func testExtractServicesWithRegistry(t *testing.T, reg *Registry, input []*descriptorpb.FileDescriptorProto, target string, wantSvcs []*Service) {
+func testExtractServicesWithRegistry(
+	t *testing.T,
+	reg *Registry,
+	input []*descriptorpb.FileDescriptorProto,
+	target string,
+	wantSvcs []*Service,
+) {
 	for _, file := range input {
 		reg.loadFile(file.GetName(), &protogen.File{
 			Proto: file,
@@ -52,62 +58,76 @@ func testExtractServicesWithRegistry(t *testing.T, reg *Registry, input []*descr
 				continue
 			}
 			if got, want := meth.RequestType, wantMeth.RequestType; got.FQMN() != want.FQMN() {
-				t.Errorf("svcs[%d].Methods[%d].RequestType = %s; want %s; input = %v", i, j, got.FQMN(), want.FQMN(), input)
+				t.Errorf("svcs[%d].Methods[%d].RequestType = %s; want %s; input = %v", i, j, got.FQMN(), want.FQMN(),
+					input)
 			}
 			if got, want := meth.ResponseType, wantMeth.ResponseType; got.FQMN() != want.FQMN() {
-				t.Errorf("svcs[%d].Methods[%d].ResponseType = %s; want %s; input = %v", i, j, got.FQMN(), want.FQMN(), input)
+				t.Errorf("svcs[%d].Methods[%d].ResponseType = %s; want %s; input = %v", i, j, got.FQMN(), want.FQMN(),
+					input)
 			}
 			var k int
 			for k = 0; k < len(meth.Bindings) && k < len(wantMeth.Bindings); k++ {
 				binding, wantBinding := meth.Bindings[k], wantMeth.Bindings[k]
 				if got, want := binding.Index, wantBinding.Index; got != want {
-					t.Errorf("svcs[%d].Methods[%d].Bindings[%d].Index = %d; want %d; input = %v", i, j, k, got, want, input)
+					t.Errorf("svcs[%d].Methods[%d].Bindings[%d].Index = %d; want %d; input = %v", i, j, k, got, want,
+						input)
 				}
 				if got, want := binding.PathTmpl, wantBinding.PathTmpl; !reflect.DeepEqual(got, want) {
-					t.Errorf("svcs[%d].Methods[%d].Bindings[%d].PathTmpl = %#v; want %#v; input = %v", i, j, k, got, want, input)
+					t.Errorf("svcs[%d].Methods[%d].Bindings[%d].PathTmpl = %#v; want %#v; input = %v", i, j, k, got,
+						want, input)
 				}
 				if got, want := binding.HTTPMethod, wantBinding.HTTPMethod; got != want {
-					t.Errorf("svcs[%d].Methods[%d].Bindings[%d].HTTPMethod = %q; want %q; input = %v", i, j, k, got, want, input)
+					t.Errorf("svcs[%d].Methods[%d].Bindings[%d].HTTPMethod = %q; want %q; input = %v", i, j, k, got,
+						want, input)
 				}
 
 				var l int
 				for l = 0; l < len(binding.PathParams) && l < len(wantBinding.PathParams); l++ {
 					param, wantParam := binding.PathParams[l], wantBinding.PathParams[l]
 					if got, want := param.FieldPath.String(), wantParam.FieldPath.String(); got != want {
-						t.Errorf("svcs[%d].Methods[%d].Bindings[%d].PathParams[%d].FieldPath.String() = %q; want %q; input = %v", i, j, k, l, got, want, input)
+						t.Errorf("svcs[%d].Methods[%d].Bindings[%d].PathParams[%d].FieldPath.String() = %q; want %q; input = %v",
+							i, j, k, l, got, want, input)
 						continue
 					}
 					for m := 0; m < len(param.FieldPath) && m < len(wantParam.FieldPath); m++ {
 						field, wantField := param.FieldPath[m].Target, wantParam.FieldPath[m].Target
-						if got, want := field.FieldDescriptorProto, wantField.FieldDescriptorProto; !proto.Equal(got, want) {
-							t.Errorf("svcs[%d].Methods[%d].Bindings[%d].PathParams[%d].FieldPath[%d].Target.FieldDescriptorProto = %v; want %v; input = %v", i, j, k, l, m, got, want, input)
+						if got, want := field.FieldDescriptorProto, wantField.FieldDescriptorProto; !proto.Equal(got,
+							want) {
+							t.Errorf("svcs[%d].Methods[%d].Bindings[%d].PathParams[%d].FieldPath[%d].Target.FieldDescriptorProto = %v; want %v; input = %v",
+								i, j, k, l, m, got, want, input)
 						}
 					}
 				}
 				for ; l < len(binding.PathParams); l++ {
 					got := binding.PathParams[l].FieldPath.String()
-					t.Errorf("svcs[%d].Methods[%d].Bindings[%d].PathParams[%d] = %q; want it to be missing; input = %v", i, j, k, l, got, input)
+					t.Errorf("svcs[%d].Methods[%d].Bindings[%d].PathParams[%d] = %q; want it to be missing; input = %v",
+						i, j, k, l, got, input)
 				}
 				for ; l < len(wantBinding.PathParams); l++ {
 					want := wantBinding.PathParams[l].FieldPath.String()
-					t.Errorf("svcs[%d].Methods[%d].Bindings[%d].PathParams[%d] missing; want %q; input = %v", i, j, k, l, want, input)
+					t.Errorf("svcs[%d].Methods[%d].Bindings[%d].PathParams[%d] missing; want %q; input = %v", i, j, k,
+						l, want, input)
 				}
 
-				if got, want := (binding.Body != nil), (wantBinding.Body != nil); got != want {
+				if got, want := binding.Body != nil, wantBinding.Body != nil; got != want {
 					if got {
-						t.Errorf("svcs[%d].Methods[%d].Bindings[%d].Body = %q; want it to be missing; input = %v", i, j, k, binding.Body.FieldPath.String(), input)
+						t.Errorf("svcs[%d].Methods[%d].Bindings[%d].Body = %q; want it to be missing; input = %v", i, j,
+							k, binding.Body.FieldPath.String(), input)
 					} else {
-						t.Errorf("svcs[%d].Methods[%d].Bindings[%d].Body missing; want %q; input = %v", i, j, k, wantBinding.Body.FieldPath.String(), input)
+						t.Errorf("svcs[%d].Methods[%d].Bindings[%d].Body missing; want %q; input = %v", i, j, k,
+							wantBinding.Body.FieldPath.String(), input)
 					}
 				} else if binding.Body != nil {
 					if got, want := binding.Body.FieldPath.String(), wantBinding.Body.FieldPath.String(); got != want {
-						t.Errorf("svcs[%d].Methods[%d].Bindings[%d].Body = %q; want %q; input = %v", i, j, k, got, want, input)
+						t.Errorf("svcs[%d].Methods[%d].Bindings[%d].Body = %q; want %q; input = %v", i, j, k, got, want,
+							input)
 					}
 				}
 			}
 			for ; k < len(meth.Bindings); k++ {
 				got := meth.Bindings[k]
-				t.Errorf("svcs[%d].Methods[%d].Bindings[%d] = %v; want it to be missing; input = %v", i, j, k, got, input)
+				t.Errorf("svcs[%d].Methods[%d].Bindings[%d] = %v; want it to be missing; input = %v", i, j, k, got,
+					input)
 			}
 			for ; k < len(wantMeth.Bindings); k++ {
 				want := wantMeth.Bindings[k]
@@ -354,7 +374,8 @@ func TestExtractServicesGenerateUnboundMethods(t *testing.T) {
 	crossLinkFixture(file)
 	reg := NewRegistry()
 	reg.SetGenerateUnboundMethods(true)
-	testExtractServicesWithRegistry(t, reg, []*descriptorpb.FileDescriptorProto{&fd}, "path/to/example.proto", file.Services)
+	testExtractServicesWithRegistry(t, reg, []*descriptorpb.FileDescriptorProto{&fd}, "path/to/example.proto",
+		file.Services)
 }
 
 func TestExtractServicesCrossPackage(t *testing.T) {
@@ -779,7 +800,8 @@ func TestExtractServicesWithError(t *testing.T) {
 		// body field path not resolved
 		{
 			target: "path/to/example.proto",
-			srcs: []string{`
+			srcs: []string{
+				`
 						name: "path/to/example.proto",
 						package: "example"
 						message_type <
@@ -1002,7 +1024,8 @@ func TestExtractServicesWithError(t *testing.T) {
 		// unsupported path parameter type
 		{
 			target: "path/to/example.proto",
-			srcs: []string{`
+			srcs: []string{
+				`
 					name: "path/to/example.proto",
 					package: "example"
 					message_type <
@@ -1243,7 +1266,8 @@ func TestResolveFieldPath(t *testing.T) {
 				t.Errorf("reg.resolveFiledPath(%q, %q) succeeded; want an error", f.Messages[0].GetName(), spec.path)
 				continue
 			}
-			t.Errorf("reg.resolveFiledPath(%q, %q) failed with %v; want success", f.Messages[0].GetName(), spec.path, err)
+			t.Errorf("reg.resolveFiledPath(%q, %q) failed with %v; want success", f.Messages[0].GetName(), spec.path,
+				err)
 		}
 	}
 }
@@ -1340,10 +1364,12 @@ func TestExtractServicesWithDeleteBody(t *testing.T) {
 		}
 		err := reg.loadServices(reg.files[spec.target])
 		if spec.expectErr && err == nil {
-			t.Errorf("loadServices(%q) succeeded; want an error; allowDeleteBody=%v, files=%v", spec.target, spec.allowDeleteBody, spec.srcs)
+			t.Errorf("loadServices(%q) succeeded; want an error; allowDeleteBody=%v, files=%v", spec.target,
+				spec.allowDeleteBody, spec.srcs)
 		}
 		if !spec.expectErr && err != nil {
-			t.Errorf("loadServices(%q) failed; do not want an error; allowDeleteBody=%v, files=%v", spec.target, spec.allowDeleteBody, spec.srcs)
+			t.Errorf("loadServices(%q) failed; do not want an error; allowDeleteBody=%v, files=%v", spec.target,
+				spec.allowDeleteBody, spec.srcs)
 		}
 		t.Log(err)
 	}

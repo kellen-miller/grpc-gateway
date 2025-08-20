@@ -16,27 +16,39 @@ import (
 	"runtime/debug"
 	"strings"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/codegenerator"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway/internal/gengateway"
+	"github.com/kellen-miller/grpc-gateway/v2/internal/codegenerator"
+	"github.com/kellen-miller/grpc-gateway/v2/internal/descriptor"
+	"github.com/kellen-miller/grpc-gateway/v2/protoc-gen-grpc-gateway/internal/gengateway"
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/protobuf/compiler/protogen"
 )
 
 var (
-	registerFuncSuffix         = flag.String("register_func_suffix", "Handler", "used to construct names of generated Register*<Suffix> methods.")
-	useRequestContext          = flag.Bool("request_context", true, "determine whether to use http.Request's context or not")
-	allowDeleteBody            = flag.Bool("allow_delete_body", false, "unless set, HTTP DELETE methods may not have a body")
-	grpcAPIConfiguration       = flag.String("grpc_api_configuration", "", "path to gRPC API Configuration in YAML format")
-	_                          = flag.Bool("allow_repeated_fields_in_body", true, "allows to use repeated field in `body` and `response_body` field of `google.api.http` annotation option. DEPRECATED: the value is ignored and always behaves as `true`.")
-	repeatedPathParamSeparator = flag.String("repeated_path_param_separator", "csv", "configures how repeated fields should be split. Allowed values are `csv`, `pipes`, `ssv` and `tsv`.")
-	allowPatchFeature          = flag.Bool("allow_patch_feature", true, "determines whether to use PATCH feature involving update masks (using google.protobuf.FieldMask).")
-	omitPackageDoc             = flag.Bool("omit_package_doc", false, "if true, no package comment will be included in the generated code")
-	standalone                 = flag.Bool("standalone", false, "generates a standalone gateway package, which imports the target service package")
-	versionFlag                = flag.Bool("version", false, "print the current version")
-	warnOnUnboundMethods       = flag.Bool("warn_on_unbound_methods", false, "emit a warning message if an RPC method has no HttpRule annotation")
-	generateUnboundMethods     = flag.Bool("generate_unbound_methods", false, "generate proxy methods even for RPC methods that have no HttpRule annotation")
-	useOpaqueAPI               = flag.Bool("use_opaque_api", false, "generate code compatible with the new Opaque API instead of the older Open Struct API")
+	registerFuncSuffix = flag.String("register_func_suffix", "Handler",
+		"used to construct names of generated Register*<Suffix> methods.")
+	useRequestContext = flag.Bool("request_context", true,
+		"determine whether to use http.Request's context or not")
+	allowDeleteBody = flag.Bool("allow_delete_body", false,
+		"unless set, HTTP DELETE methods may not have a body")
+	grpcAPIConfiguration = flag.String("grpc_api_configuration", "",
+		"path to gRPC API Configuration in YAML format")
+	_ = flag.Bool("allow_repeated_fields_in_body", true,
+		"allows to use repeated field in `body` and `response_body` field of `google.api.http` annotation option. DEPRECATED: the value is ignored and always behaves as `true`.")
+	repeatedPathParamSeparator = flag.String("repeated_path_param_separator", "csv",
+		"configures how repeated fields should be split. Allowed values are `csv`, `pipes`, `ssv` and `tsv`.")
+	allowPatchFeature = flag.Bool("allow_patch_feature", true,
+		"determines whether to use PATCH feature involving update masks (using google.protobuf.FieldMask).")
+	omitPackageDoc = flag.Bool("omit_package_doc", false,
+		"if true, no package comment will be included in the generated code")
+	standalone = flag.Bool("standalone", false,
+		"generates a standalone gateway package, which imports the target service package")
+	versionFlag          = flag.Bool("version", false, "print the current version")
+	warnOnUnboundMethods = flag.Bool("warn_on_unbound_methods", false,
+		"emit a warning message if an RPC method has no HttpRule annotation")
+	generateUnboundMethods = flag.Bool("generate_unbound_methods", false,
+		"generate proxy methods even for RPC methods that have no HttpRule annotation")
+	useOpaqueAPI = flag.Bool("use_opaque_api", false,
+		"generate code compatible with the new Opaque API instead of the older Open Struct API")
 
 	_ = flag.Bool("logtostderr", false, "Legacy glog compatibility. This flag is a no-op, you can safely remove it")
 )
@@ -81,7 +93,8 @@ func main() {
 
 		codegenerator.SetSupportedFeaturesOnPluginGen(gen)
 
-		generator := gengateway.New(reg, *useRequestContext, *registerFuncSuffix, *allowPatchFeature, *standalone, *useOpaqueAPI)
+		generator := gengateway.New(reg, *useRequestContext, *registerFuncSuffix, *allowPatchFeature, *standalone,
+			*useOpaqueAPI)
 
 		if grpclog.V(1) {
 			grpclog.Infof("Parsing code generator request")

@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 
-	examples "github.com/grpc-ecosystem/grpc-gateway/v2/examples/internal/proto/examplepb"
+	examples "github.com/kellen-miller/grpc-gateway/v2/examples/internal/proto/examplepb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	excessBody_contextChRPC    = make(chan context.Context)
+	excessBody_contextChRPC = make(chan context.Context)
 	excessBody_contextChStream = make(chan context.Context)
 )
 
@@ -35,7 +35,10 @@ func (s excessBodyServer) NoBodyRpc(ctx context.Context, req *emptypb.Empty) (*e
 	return nil, status.Error(codes.Canceled, "context canceled")
 }
 
-func (s excessBodyServer) NoBodyServerStream(req *emptypb.Empty, stream grpc.ServerStreamingServer[emptypb.Empty]) error {
+func (s excessBodyServer) NoBodyServerStream(
+	req *emptypb.Empty,
+	stream grpc.ServerStreamingServer[emptypb.Empty],
+) error {
 	excessBody_contextChStream <- stream.Context()
 	<-stream.Context().Done()
 	return status.Error(codes.Canceled, "context canceled")
@@ -47,7 +50,10 @@ func (s excessBodyServer) WithBodyRpc(ctx context.Context, req *emptypb.Empty) (
 	return nil, status.Error(codes.Canceled, "context canceled")
 }
 
-func (s excessBodyServer) WithBodyServerStream(req *emptypb.Empty, stream grpc.ServerStreamingServer[emptypb.Empty]) error {
+func (s excessBodyServer) WithBodyServerStream(
+	req *emptypb.Empty,
+	stream grpc.ServerStreamingServer[emptypb.Empty],
+) error {
 	excessBody_contextChStream <- stream.Context()
 	<-stream.Context().Done()
 	return status.Error(codes.Canceled, "context canceled")

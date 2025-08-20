@@ -11,8 +11,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
+	"github.com/kellen-miller/grpc-gateway/v2/runtime"
+	"github.com/kellen-miller/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/health/grpc_health_v1"
@@ -121,9 +121,12 @@ func TestMuxServeHTTP(t *testing.T) {
 			patterns: []stubPattern{
 				{
 					method: "POST",
-					ops:    []int{int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1, int(utilities.OpCapture), 1},
-					pool:   []string{"foo", "id"},
-					verb:   "archive",
+					ops: []int{
+						int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1,
+						int(utilities.OpCapture), 1,
+					},
+					pool: []string{"foo", "id"},
+					verb: "archive",
 				},
 			},
 			reqMethod:  "DELETE",
@@ -283,14 +286,20 @@ func TestMuxServeHTTP(t *testing.T) {
 			patterns: []stubPattern{
 				{
 					method: "GET",
-					ops:    []int{int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1, int(utilities.OpCapture), 1},
-					pool:   []string{"foo", "id"},
+					ops: []int{
+						int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1,
+						int(utilities.OpCapture), 1,
+					},
+					pool: []string{"foo", "id"},
 				},
 				{
 					method: "GET",
-					ops:    []int{int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1, int(utilities.OpCapture), 1},
-					pool:   []string{"foo", "id"},
-					verb:   "verb",
+					ops: []int{
+						int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1,
+						int(utilities.OpCapture), 1,
+					},
+					pool: []string{"foo", "id"},
+					verb: "verb",
 				},
 			},
 			reqMethod: "GET",
@@ -305,8 +314,11 @@ func TestMuxServeHTTP(t *testing.T) {
 			patterns: []stubPattern{
 				{
 					method: "GET",
-					ops:    []int{int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1, int(utilities.OpCapture), 1},
-					pool:   []string{"foo", "id"},
+					ops: []int{
+						int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1,
+						int(utilities.OpCapture), 1,
+					},
+					pool: []string{"foo", "id"},
 				},
 			},
 			reqMethod: "GET",
@@ -321,8 +333,11 @@ func TestMuxServeHTTP(t *testing.T) {
 			patterns: []stubPattern{
 				{
 					method: "GET",
-					ops:    []int{int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1, int(utilities.OpCapture), 1},
-					pool:   []string{"foo", "id"},
+					ops: []int{
+						int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1,
+						int(utilities.OpCapture), 1,
+					},
+					pool: []string{"foo", "id"},
 				},
 			},
 			reqMethod: "GET",
@@ -337,14 +352,20 @@ func TestMuxServeHTTP(t *testing.T) {
 			patterns: []stubPattern{
 				{
 					method: "POST",
-					ops:    []int{int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1, int(utilities.OpCapture), 1},
-					pool:   []string{"foo", "id"},
+					ops: []int{
+						int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1,
+						int(utilities.OpCapture), 1,
+					},
+					pool: []string{"foo", "id"},
 				},
 				{
 					method: "POST",
-					ops:    []int{int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1, int(utilities.OpCapture), 1},
-					pool:   []string{"foo", "id"},
-					verb:   "verb",
+					ops: []int{
+						int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1,
+						int(utilities.OpCapture), 1,
+					},
+					pool: []string{"foo", "id"},
+					verb: "verb",
 				},
 			},
 			reqMethod: "POST",
@@ -374,14 +395,20 @@ func TestMuxServeHTTP(t *testing.T) {
 			patterns: []stubPattern{
 				{
 					method: "POST",
-					ops:    []int{int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1, int(utilities.OpCapture), 1},
-					pool:   []string{"foo", "id"},
+					ops: []int{
+						int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1,
+						int(utilities.OpCapture), 1,
+					},
+					pool: []string{"foo", "id"},
 				},
 				{
 					method: "POST",
-					ops:    []int{int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1, int(utilities.OpCapture), 1},
-					pool:   []string{"foo", "id"},
-					verb:   "verb:subverb",
+					ops: []int{
+						int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1,
+						int(utilities.OpCapture), 1,
+					},
+					pool: []string{"foo", "id"},
+					verb: "verb:subverb",
 				},
 			},
 			reqMethod: "POST",
@@ -396,8 +423,11 @@ func TestMuxServeHTTP(t *testing.T) {
 			patterns: []stubPattern{
 				{
 					method: "GET",
-					ops:    []int{int(utilities.OpLitPush), 0, int(utilities.OpPush), 1, int(utilities.OpCapture), 1, int(utilities.OpLitPush), 2},
-					pool:   []string{"foo", "id", "bar"},
+					ops: []int{
+						int(utilities.OpLitPush), 0, int(utilities.OpPush), 1, int(utilities.OpCapture), 1,
+						int(utilities.OpLitPush), 2,
+					},
+					pool: []string{"foo", "id", "bar"},
 				},
 			},
 			reqMethod: "POST",
@@ -417,7 +447,8 @@ func TestMuxServeHTTP(t *testing.T) {
 						int(utilities.OpPush), 0,
 						int(utilities.OpConcatN), 1,
 						int(utilities.OpCapture), 1,
-						int(utilities.OpLitPush), 2},
+						int(utilities.OpLitPush), 2,
+					},
 					pool: []string{"foo", "id", "bar"},
 				},
 			},
@@ -439,7 +470,8 @@ func TestMuxServeHTTP(t *testing.T) {
 						int(utilities.OpPush), 0,
 						int(utilities.OpConcatN), 1,
 						int(utilities.OpCapture), 1,
-						int(utilities.OpLitPush), 2},
+						int(utilities.OpLitPush), 2,
+					},
 					pool: []string{"foo", "id", "bar"},
 				},
 			},
@@ -460,7 +492,8 @@ func TestMuxServeHTTP(t *testing.T) {
 						int(utilities.OpPush), 0,
 						int(utilities.OpConcatN), 1,
 						int(utilities.OpCapture), 1,
-						int(utilities.OpLitPush), 2},
+						int(utilities.OpLitPush), 2,
+					},
 					pool: []string{"foo", "id", "bar"},
 				},
 			},
@@ -575,11 +608,13 @@ func TestMuxServeHTTP(t *testing.T) {
 				func(p stubPattern) {
 					pat, err := runtime.NewPattern(1, p.ops, p.pool, p.verb)
 					if err != nil {
-						t.Fatalf("runtime.NewPattern(1, %#v, %#v, %q) failed with %v; want success", p.ops, p.pool, p.verb, err)
+						t.Fatalf("runtime.NewPattern(1, %#v, %#v, %q) failed with %v; want success", p.ops, p.pool,
+							p.verb, err)
 					}
-					mux.Handle(p.method, pat, func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
-						_, _ = fmt.Fprintf(w, "%s %s", p.method, pat.String())
-					})
+					mux.Handle(p.method, pat,
+						func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+							_, _ = fmt.Fprintf(w, "%s %s", p.method, pat.String())
+						})
 				}(p)
 			}
 
@@ -756,7 +791,9 @@ var healthCheckTests = []struct {
 func TestWithHealthzEndpoint_codes(t *testing.T) {
 	for _, tt := range healthCheckTests {
 		t.Run(tt.name, func(t *testing.T) {
-			mux := runtime.NewServeMux(runtime.WithHealthzEndpoint(&dummyHealthCheckClient{status: tt.status, code: tt.code}))
+			mux := runtime.NewServeMux(runtime.WithHealthzEndpoint(&dummyHealthCheckClient{
+				status: tt.status, code: tt.code,
+			}))
 
 			r := httptest.NewRequest(http.MethodGet, "/healthz", nil)
 			rr := httptest.NewRecorder()
@@ -832,7 +869,9 @@ func TestWithHealthzEndpoint_serviceParam(t *testing.T) {
 func TestWithHealthzEndpoint_header(t *testing.T) {
 	for _, tt := range healthCheckTests {
 		t.Run(tt.name, func(t *testing.T) {
-			mux := runtime.NewServeMux(runtime.WithHealthzEndpoint(&dummyHealthCheckClient{status: tt.status, code: tt.code}))
+			mux := runtime.NewServeMux(runtime.WithHealthzEndpoint(&dummyHealthCheckClient{
+				status: tt.status, code: tt.code,
+			}))
 
 			r := httptest.NewRequest(http.MethodGet, "/healthz", nil)
 			rr := httptest.NewRecorder()
@@ -856,7 +895,11 @@ type dummyHealthCheckClient struct {
 	code   codes.Code
 }
 
-func (g *dummyHealthCheckClient) Check(ctx context.Context, r *grpc_health_v1.HealthCheckRequest, opts ...grpc.CallOption) (*grpc_health_v1.HealthCheckResponse, error) {
+func (g *dummyHealthCheckClient) Check(
+	ctx context.Context,
+	r *grpc_health_v1.HealthCheckRequest,
+	opts ...grpc.CallOption,
+) (*grpc_health_v1.HealthCheckResponse, error) {
 	if g.code != codes.OK {
 		return nil, status.Error(g.code, r.GetService())
 	}
@@ -864,10 +907,18 @@ func (g *dummyHealthCheckClient) Check(ctx context.Context, r *grpc_health_v1.He
 	return &grpc_health_v1.HealthCheckResponse{Status: g.status}, nil
 }
 
-func (g *dummyHealthCheckClient) Watch(ctx context.Context, r *grpc_health_v1.HealthCheckRequest, opts ...grpc.CallOption) (grpc_health_v1.Health_WatchClient, error) {
+func (g *dummyHealthCheckClient) Watch(
+	ctx context.Context,
+	r *grpc_health_v1.HealthCheckRequest,
+	opts ...grpc.CallOption,
+) (grpc_health_v1.Health_WatchClient, error) {
 	return nil, status.Error(codes.Unimplemented, "unimplemented")
 }
-func (g *dummyHealthCheckClient) List(ctx context.Context, r *grpc_health_v1.HealthListRequest, opts ...grpc.CallOption) (*grpc_health_v1.HealthListResponse, error) {
+func (g *dummyHealthCheckClient) List(
+	ctx context.Context,
+	r *grpc_health_v1.HealthListRequest,
+	opts ...grpc.CallOption,
+) (*grpc_health_v1.HealthListResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "unimplemented")
 }
 

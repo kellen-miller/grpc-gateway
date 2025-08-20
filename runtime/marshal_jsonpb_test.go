@@ -8,8 +8,8 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime/internal/examplepb"
+	"github.com/kellen-miller/grpc-gateway/v2/runtime"
+	"github.com/kellen-miller/grpc-gateway/v2/runtime/internal/examplepb"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/testing/protocmp"
@@ -117,7 +117,8 @@ func TestJSONPbMarshal(t *testing.T) {
 			var got examplepb.ABitOfEverything
 			unmarshaler := &protojson.UnmarshalOptions{}
 			if err = unmarshaler.Unmarshal(buf, &got); err != nil {
-				t.Errorf("jsonpb.UnmarshalString(%q, &got) failed with %v; want success; spec=%v", string(buf), err, spec)
+				t.Errorf("jsonpb.UnmarshalString(%q, &got) failed with %v; want success; spec=%v", string(buf), err,
+					spec)
 			}
 			if diff := cmp.Diff(&got, &msg, protocmp.Transform()); diff != "" {
 				t.Errorf("case %d: spec=%v; %s", i, spec, diff)

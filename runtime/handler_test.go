@@ -9,8 +9,8 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	pb "github.com/grpc-ecosystem/grpc-gateway/v2/runtime/internal/examplepb"
+	"github.com/kellen-miller/grpc-gateway/v2/runtime"
+	pb "github.com/kellen-miller/grpc-gateway/v2/runtime/internal/examplepb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
@@ -37,44 +37,46 @@ func TestForwardResponseStream(t *testing.T) {
 		msgs         []msg
 		statusCode   int
 		responseBody bool
-	}{{
-		name: "encoding",
-		msgs: []msg{
-			{&pb.SimpleMessage{Id: "One"}, nil},
-			{&pb.SimpleMessage{Id: "Two"}, nil},
+	}{
+		{
+			name: "encoding",
+			msgs: []msg{
+				{&pb.SimpleMessage{Id: "One"}, nil},
+				{&pb.SimpleMessage{Id: "Two"}, nil},
+			},
+			statusCode: http.StatusOK,
+		}, {
+			name:       "empty",
+			statusCode: http.StatusOK,
+		}, {
+			name:       "error",
+			msgs:       []msg{{nil, status.Errorf(codes.OutOfRange, "400")}},
+			statusCode: http.StatusBadRequest,
+		}, {
+			name: "stream_error",
+			msgs: []msg{
+				{&pb.SimpleMessage{Id: "One"}, nil},
+				{nil, status.Errorf(codes.OutOfRange, "400")},
+			},
+			statusCode: http.StatusOK,
+		}, {
+			name: "response body stream case",
+			msgs: []msg{
+				{fakeResponseBodyWrapper{&pb.SimpleMessage{Id: "One"}}, nil},
+				{fakeResponseBodyWrapper{&pb.SimpleMessage{Id: "Two"}}, nil},
+			},
+			responseBody: true,
+			statusCode:   http.StatusOK,
+		}, {
+			name: "response body stream error case",
+			msgs: []msg{
+				{fakeResponseBodyWrapper{&pb.SimpleMessage{Id: "One"}}, nil},
+				{nil, status.Errorf(codes.OutOfRange, "400")},
+			},
+			responseBody: true,
+			statusCode:   http.StatusOK,
 		},
-		statusCode: http.StatusOK,
-	}, {
-		name:       "empty",
-		statusCode: http.StatusOK,
-	}, {
-		name:       "error",
-		msgs:       []msg{{nil, status.Errorf(codes.OutOfRange, "400")}},
-		statusCode: http.StatusBadRequest,
-	}, {
-		name: "stream_error",
-		msgs: []msg{
-			{&pb.SimpleMessage{Id: "One"}, nil},
-			{nil, status.Errorf(codes.OutOfRange, "400")},
-		},
-		statusCode: http.StatusOK,
-	}, {
-		name: "response body stream case",
-		msgs: []msg{
-			{fakeResponseBodyWrapper{&pb.SimpleMessage{Id: "One"}}, nil},
-			{fakeResponseBodyWrapper{&pb.SimpleMessage{Id: "Two"}}, nil},
-		},
-		responseBody: true,
-		statusCode:   http.StatusOK,
-	}, {
-		name: "response body stream error case",
-		msgs: []msg{
-			{fakeResponseBodyWrapper{&pb.SimpleMessage{Id: "One"}}, nil},
-			{nil, status.Errorf(codes.OutOfRange, "400")},
-		},
-		responseBody: true,
-		statusCode:   http.StatusOK,
-	}}
+	}
 
 	newTestRecv := func(t *testing.T, msgs []msg) func() (proto.Message, error) {
 		var count int
@@ -201,46 +203,48 @@ func TestForwardResponseStreamCustomMarshaler(t *testing.T) {
 		msgs            []msg
 		statusCode      int
 		wantContentType string
-	}{{
-		name:      "encoding",
-		marshaler: marshaler,
-		msgs: []msg{
-			{&pb.SimpleMessage{Id: "One"}, nil},
-			{&pb.SimpleMessage{Id: "Two"}, nil},
+	}{
+		{
+			name:      "encoding",
+			marshaler: marshaler,
+			msgs: []msg{
+				{&pb.SimpleMessage{Id: "One"}, nil},
+				{&pb.SimpleMessage{Id: "Two"}, nil},
+			},
+			statusCode:      http.StatusOK,
+			wantContentType: "Custom-Content-Type",
+		}, {
+			name:       "empty",
+			marshaler:  marshaler,
+			statusCode: http.StatusOK,
+		}, {
+			name:            "error",
+			marshaler:       marshaler,
+			msgs:            []msg{{nil, status.Errorf(codes.OutOfRange, "400")}},
+			statusCode:      http.StatusBadRequest,
+			wantContentType: "Custom-Content-Type",
+		}, {
+			name:      "stream_error",
+			marshaler: marshaler,
+			msgs: []msg{
+				{&pb.SimpleMessage{Id: "One"}, nil},
+				{nil, status.Errorf(codes.OutOfRange, "400")},
+			},
+			statusCode:      http.StatusOK,
+			wantContentType: "Custom-Content-Type",
+		}, {
+			name: "stream_content_type",
+			marshaler: marshalerStreamContentType{
+				Marshaler:               marshaler,
+				CustomStreamContentType: "Stream-Content-Type",
+			},
+			msgs: []msg{
+				{&pb.SimpleMessage{Id: "One"}, nil},
+			},
+			statusCode:      http.StatusOK,
+			wantContentType: "Stream-Content-Type",
 		},
-		statusCode:      http.StatusOK,
-		wantContentType: "Custom-Content-Type",
-	}, {
-		name:       "empty",
-		marshaler:  marshaler,
-		statusCode: http.StatusOK,
-	}, {
-		name:            "error",
-		marshaler:       marshaler,
-		msgs:            []msg{{nil, status.Errorf(codes.OutOfRange, "400")}},
-		statusCode:      http.StatusBadRequest,
-		wantContentType: "Custom-Content-Type",
-	}, {
-		name:      "stream_error",
-		marshaler: marshaler,
-		msgs: []msg{
-			{&pb.SimpleMessage{Id: "One"}, nil},
-			{nil, status.Errorf(codes.OutOfRange, "400")},
-		},
-		statusCode:      http.StatusOK,
-		wantContentType: "Custom-Content-Type",
-	}, {
-		name: "stream_content_type",
-		marshaler: marshalerStreamContentType{
-			Marshaler:               marshaler,
-			CustomStreamContentType: "Stream-Content-Type",
-		},
-		msgs: []msg{
-			{&pb.SimpleMessage{Id: "One"}, nil},
-		},
-		statusCode:      http.StatusOK,
-		wantContentType: "Stream-Content-Type",
-	}}
+	}
 
 	newTestRecv := func(t *testing.T, msgs []msg) func() (proto.Message, error) {
 		var count int
@@ -308,32 +312,34 @@ func TestForwardResponseMessage(t *testing.T) {
 		contentType       string
 		frw               runtime.ForwardResponseRewriter
 		getWantedResponse func(msg any) ([]byte, error)
-	}{{
-		name:        "standard marshaler",
-		marshaler:   &runtime.JSONPb{},
-		contentType: "application/json",
-	}, {
-		name:        "httpbody marshaler",
-		marshaler:   &runtime.HTTPBodyMarshaler{&runtime.JSONPb{}},
-		contentType: "application/json",
-	}, {
-		name:        "custom marshaler",
-		marshaler:   &CustomMarshaler{&runtime.JSONPb{}},
-		contentType: "Custom-Content-Type",
-	}, {
-		name:        "custom forward response rewriter",
-		marshaler:   &runtime.JSONPb{},
-		contentType: "application/json",
-		frw: func(ctx context.Context, response proto.Message) (any, error) {
-			return map[string]any{
-				"ok":   true,
-				"data": response,
-			}, nil
+	}{
+		{
+			name:        "standard marshaler",
+			marshaler:   &runtime.JSONPb{},
+			contentType: "application/json",
+		}, {
+			name:        "httpbody marshaler",
+			marshaler:   &runtime.HTTPBodyMarshaler{&runtime.JSONPb{}},
+			contentType: "application/json",
+		}, {
+			name:        "custom marshaler",
+			marshaler:   &CustomMarshaler{&runtime.JSONPb{}},
+			contentType: "Custom-Content-Type",
+		}, {
+			name:        "custom forward response rewriter",
+			marshaler:   &runtime.JSONPb{},
+			contentType: "application/json",
+			frw: func(ctx context.Context, response proto.Message) (any, error) {
+				return map[string]any{
+					"ok":   true,
+					"data": response,
+				}, nil
+			},
+			getWantedResponse: func(msg any) ([]byte, error) {
+				return new(runtime.JSONPb).Marshal(map[string]any{"ok": true, "data": msg})
+			},
 		},
-		getWantedResponse: func(msg any) ([]byte, error) {
-			return new(runtime.JSONPb).Marshal(map[string]any{"ok": true, "data": msg})
-		},
-	}}
+	}
 
 	ctx := runtime.NewServerMetadataContext(context.Background(), runtime.ServerMetadata{})
 	for _, tt := range tests {

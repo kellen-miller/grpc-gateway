@@ -12,11 +12,11 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor/openapiconfig"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/httprule"
-	openapi_options "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/kellen-miller/grpc-gateway/v2/internal/descriptor"
+	"github.com/kellen-miller/grpc-gateway/v2/internal/descriptor/openapiconfig"
+	"github.com/kellen-miller/grpc-gateway/v2/internal/httprule"
+	openapi_options "github.com/kellen-miller/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	"github.com/kellen-miller/grpc-gateway/v2/runtime"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/genproto/googleapis/api/visibility"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -197,31 +197,33 @@ func TestMessageToQueryParametersWithEnumAsInt(t *testing.T) {
 							Number:   proto.Int32(2),
 						},
 					},
-					NestedType: []*descriptorpb.DescriptorProto{{
-						Name: proto.String("DeepNested"),
-						Field: []*descriptorpb.FieldDescriptorProto{
-							{
-								Name:   proto.String("b"),
-								Type:   descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum(),
-								Number: proto.Int32(1),
+					NestedType: []*descriptorpb.DescriptorProto{
+						{
+							Name: proto.String("DeepNested"),
+							Field: []*descriptorpb.FieldDescriptorProto{
+								{
+									Name:   proto.String("b"),
+									Type:   descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum(),
+									Number: proto.Int32(1),
+								},
+								{
+									Name:     proto.String("c"),
+									Type:     descriptorpb.FieldDescriptorProto_TYPE_ENUM.Enum(),
+									TypeName: proto.String(".example.Nested.DeepNested.DeepEnum"),
+									Number:   proto.Int32(2),
+								},
 							},
-							{
-								Name:     proto.String("c"),
-								Type:     descriptorpb.FieldDescriptorProto_TYPE_ENUM.Enum(),
-								TypeName: proto.String(".example.Nested.DeepNested.DeepEnum"),
-								Number:   proto.Int32(2),
-							},
-						},
-						EnumType: []*descriptorpb.EnumDescriptorProto{
-							{
-								Name: proto.String("DeepEnum"),
-								Value: []*descriptorpb.EnumValueDescriptorProto{
-									{Name: proto.String("FALSE"), Number: proto.Int32(0)},
-									{Name: proto.String("TRUE"), Number: proto.Int32(1)},
+							EnumType: []*descriptorpb.EnumDescriptorProto{
+								{
+									Name: proto.String("DeepEnum"),
+									Value: []*descriptorpb.EnumValueDescriptorProto{
+										{Name: proto.String("FALSE"), Number: proto.Int32(0)},
+										{Name: proto.String("TRUE"), Number: proto.Int32(1)},
+									},
 								},
 							},
 						},
-					}},
+					},
 				},
 			},
 			Message: "ExampleMessage",
@@ -266,7 +268,7 @@ func TestMessageToQueryParametersWithEnumAsInt(t *testing.T) {
 				MessageType:    test.MsgDescs,
 				Service:        []*descriptorpb.ServiceDescriptorProto{},
 				Options: &descriptorpb.FileOptions{
-					GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+					GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 				},
 			},
 			GoPkg: descriptor.GoPackage{
@@ -384,31 +386,33 @@ func TestMessageToQueryParametersWithOmitEnumDefaultValue(t *testing.T) {
 							Number:   proto.Int32(2),
 						},
 					},
-					NestedType: []*descriptorpb.DescriptorProto{{
-						Name: proto.String("DeepNested"),
-						Field: []*descriptorpb.FieldDescriptorProto{
-							{
-								Name:   proto.String("b"),
-								Type:   descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum(),
-								Number: proto.Int32(1),
+					NestedType: []*descriptorpb.DescriptorProto{
+						{
+							Name: proto.String("DeepNested"),
+							Field: []*descriptorpb.FieldDescriptorProto{
+								{
+									Name:   proto.String("b"),
+									Type:   descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum(),
+									Number: proto.Int32(1),
+								},
+								{
+									Name:     proto.String("c"),
+									Type:     descriptorpb.FieldDescriptorProto_TYPE_ENUM.Enum(),
+									TypeName: proto.String(".example.Nested.DeepNested.DeepEnum"),
+									Number:   proto.Int32(2),
+								},
 							},
-							{
-								Name:     proto.String("c"),
-								Type:     descriptorpb.FieldDescriptorProto_TYPE_ENUM.Enum(),
-								TypeName: proto.String(".example.Nested.DeepNested.DeepEnum"),
-								Number:   proto.Int32(2),
-							},
-						},
-						EnumType: []*descriptorpb.EnumDescriptorProto{
-							{
-								Name: proto.String("DeepEnum"),
-								Value: []*descriptorpb.EnumValueDescriptorProto{
-									{Name: proto.String("FALSE"), Number: proto.Int32(0)},
-									{Name: proto.String("TRUE"), Number: proto.Int32(1)},
+							EnumType: []*descriptorpb.EnumDescriptorProto{
+								{
+									Name: proto.String("DeepEnum"),
+									Value: []*descriptorpb.EnumValueDescriptorProto{
+										{Name: proto.String("FALSE"), Number: proto.Int32(0)},
+										{Name: proto.String("TRUE"), Number: proto.Int32(1)},
+									},
 								},
 							},
 						},
-					}},
+					},
 				},
 			},
 			Message: "ExampleMessage",
@@ -452,7 +456,7 @@ func TestMessageToQueryParametersWithOmitEnumDefaultValue(t *testing.T) {
 				MessageType:    test.MsgDescs,
 				Service:        []*descriptorpb.ServiceDescriptorProto{},
 				Options: &descriptorpb.FileOptions{
-					GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+					GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 				},
 			},
 			GoPkg: descriptor.GoPackage{
@@ -570,31 +574,33 @@ func TestMessageToQueryParameters(t *testing.T) {
 							Number:   proto.Int32(2),
 						},
 					},
-					NestedType: []*descriptorpb.DescriptorProto{{
-						Name: proto.String("DeepNested"),
-						Field: []*descriptorpb.FieldDescriptorProto{
-							{
-								Name:   proto.String("b"),
-								Type:   descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum(),
-								Number: proto.Int32(1),
+					NestedType: []*descriptorpb.DescriptorProto{
+						{
+							Name: proto.String("DeepNested"),
+							Field: []*descriptorpb.FieldDescriptorProto{
+								{
+									Name:   proto.String("b"),
+									Type:   descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum(),
+									Number: proto.Int32(1),
+								},
+								{
+									Name:     proto.String("c"),
+									Type:     descriptorpb.FieldDescriptorProto_TYPE_ENUM.Enum(),
+									TypeName: proto.String(".example.Nested.DeepNested.DeepEnum"),
+									Number:   proto.Int32(2),
+								},
 							},
-							{
-								Name:     proto.String("c"),
-								Type:     descriptorpb.FieldDescriptorProto_TYPE_ENUM.Enum(),
-								TypeName: proto.String(".example.Nested.DeepNested.DeepEnum"),
-								Number:   proto.Int32(2),
-							},
-						},
-						EnumType: []*descriptorpb.EnumDescriptorProto{
-							{
-								Name: proto.String("DeepEnum"),
-								Value: []*descriptorpb.EnumValueDescriptorProto{
-									{Name: proto.String("FALSE"), Number: proto.Int32(0)},
-									{Name: proto.String("TRUE"), Number: proto.Int32(1)},
+							EnumType: []*descriptorpb.EnumDescriptorProto{
+								{
+									Name: proto.String("DeepEnum"),
+									Value: []*descriptorpb.EnumValueDescriptorProto{
+										{Name: proto.String("FALSE"), Number: proto.Int32(0)},
+										{Name: proto.String("TRUE"), Number: proto.Int32(1)},
+									},
 								},
 							},
 						},
-					}},
+					},
 				},
 			},
 			Message: "ExampleMessage",
@@ -638,7 +644,7 @@ func TestMessageToQueryParameters(t *testing.T) {
 				MessageType:    test.MsgDescs,
 				Service:        []*descriptorpb.ServiceDescriptorProto{},
 				Options: &descriptorpb.FileOptions{
-					GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+					GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 				},
 			},
 			GoPkg: descriptor.GoPackage{
@@ -763,7 +769,7 @@ func TestMessageToQueryParametersNoRecursive(t *testing.T) {
 				MessageType:    test.MsgDescs,
 				Service:        []*descriptorpb.ServiceDescriptorProto{},
 				Options: &descriptorpb.FileOptions{
-					GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+					GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 				},
 			},
 			GoPkg: descriptor.GoPackage{
@@ -888,7 +894,7 @@ func TestMessageToQueryParametersRecursive(t *testing.T) {
 				MessageType:    test.MsgDescs,
 				Service:        []*descriptorpb.ServiceDescriptorProto{},
 				Options: &descriptorpb.FileOptions{
-					GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+					GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 				},
 			},
 			GoPkg: descriptor.GoPackage{
@@ -1051,7 +1057,7 @@ func TestMessageToQueryParametersWithJsonName(t *testing.T) {
 				MessageType:    test.MsgDescs,
 				Service:        []*descriptorpb.ServiceDescriptorProto{},
 				Options: &descriptorpb.FileOptions{
-					GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+					GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 				},
 			},
 			GoPkg: descriptor.GoPackage{
@@ -1292,7 +1298,7 @@ func TestMessageToQueryParametersWithRequiredField(t *testing.T) {
 				MessageType:    test.MsgDescs,
 				Service:        []*descriptorpb.ServiceDescriptorProto{},
 				Options: &descriptorpb.FileOptions{
-					GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+					GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 				},
 			},
 			GoPkg: descriptor.GoPackage{
@@ -1425,7 +1431,7 @@ func TestMessageToQueryParametersWithEnumFieldOption(t *testing.T) {
 				MessageType:    test.MsgDescs,
 				Service:        []*descriptorpb.ServiceDescriptorProto{},
 				Options: &descriptorpb.FileOptions{
-					GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+					GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 				},
 			},
 			GoPkg: descriptor.GoPackage{
@@ -1483,7 +1489,7 @@ func TestApplyTemplateSimple(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{msgdesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -1586,7 +1592,7 @@ func TestApplyTemplateMultiService(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{msgdesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -1658,10 +1664,12 @@ func TestApplyTemplateMultiService(t *testing.T) {
 
 	// Check that the two services have unique operation IDs even though they
 	// have the same method name.
-	if want, is := "ExampleService_Example", result.getPathItemObject("/v1/echo").Get.OperationID; !reflect.DeepEqual(is, want) {
+	if want, is := "ExampleService_Example", result.getPathItemObject("/v1/echo").Get.OperationID; !reflect.DeepEqual(is,
+		want) {
 		t.Errorf("applyTemplate(%#v).Paths[0].Get.OperationID = %s want to be %s", file, is, want)
 	}
-	if want, is := "OtherService_Example", result.getPathItemObject("/v1/ping").Get.OperationID; !reflect.DeepEqual(is, want) {
+	if want, is := "OtherService_Example", result.getPathItemObject("/v1/ping").Get.OperationID; !reflect.DeepEqual(is,
+		want) {
 		t.Errorf("applyTemplate(%#v).Paths[0].Get.OperationID = %s want to be %s", file, is, want)
 	}
 
@@ -1696,7 +1704,7 @@ func TestApplyTemplateOpenAPIConfigFromYAML(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{msgdesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -1762,10 +1770,12 @@ func TestApplyTemplateOpenAPIConfigFromYAML(t *testing.T) {
 		t.Errorf("applyTemplate(%#v) failed with %v; want success", file, err)
 		return
 	}
-	if want, is, name := "ExampleService description", result.Tags[0].Description, "Tags[0].Description"; !reflect.DeepEqual(is, want) {
+	if want, is, name := "ExampleService description", result.Tags[0].Description, "Tags[0].Description"; !reflect.DeepEqual(is,
+		want) {
 		t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, is, want)
 	}
-	if want, is, name := "Find out more about ExampleService", result.Tags[0].ExternalDocs.Description, "Tags[0].ExternalDocs.Description"; !reflect.DeepEqual(is, want) {
+	if want, is, name := "Find out more about ExampleService", result.Tags[0].ExternalDocs.Description, "Tags[0].ExternalDocs.Description"; !reflect.DeepEqual(is,
+		want) {
 		t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, is, want)
 	}
 
@@ -1814,7 +1824,7 @@ func TestApplyTemplateOverrideWithOperation(t *testing.T) {
 				MessageType:    []*descriptorpb.DescriptorProto{msgdesc},
 				Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 				Options: &descriptorpb.FileOptions{
-					GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+					GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 				},
 			},
 			GoPkg: descriptor.GoPackage{
@@ -1848,7 +1858,12 @@ func TestApplyTemplateOverrideWithOperation(t *testing.T) {
 		}
 	}
 
-	verifyTemplateFromReq := func(t *testing.T, reg *descriptor.Registry, file *descriptor.File, opts *openapiconfig.OpenAPIOptions) {
+	verifyTemplateFromReq := func(
+		t *testing.T,
+		reg *descriptor.Registry,
+		file *descriptor.File,
+		opts *openapiconfig.OpenAPIOptions,
+	) {
 		if err := AddErrorDefs(reg); err != nil {
 			t.Errorf("AddErrorDefs(%#v) failed with %v; want success", reg, err)
 			return
@@ -1873,10 +1888,13 @@ func TestApplyTemplateOverrideWithOperation(t *testing.T) {
 		if want, is := "MyExample", result.getPathItemObject("/v1/echo").Get.OperationID; !reflect.DeepEqual(is, want) {
 			t.Errorf("applyTemplate(%#v).Paths[0].Get.OperationID = %s want to be %s", *file, is, want)
 		}
-		if want, is := []string{"application/xml"}, result.getPathItemObject("/v1/echo").Get.Consumes; !reflect.DeepEqual(is, want) {
+		if want, is := []string{"application/xml"}, result.getPathItemObject("/v1/echo").Get.Consumes; !reflect.DeepEqual(is,
+			want) {
 			t.Errorf("applyTemplate(%#v).Paths[0].Get.Consumes = %s want to be %s", *file, is, want)
 		}
-		if want, is := []string{"application/json", "application/xml"}, result.getPathItemObject("/v1/echo").Get.Produces; !reflect.DeepEqual(is, want) {
+		if want, is := []string{
+			"application/json", "application/xml",
+		}, result.getPathItemObject("/v1/echo").Get.Produces; !reflect.DeepEqual(is, want) {
 			t.Errorf("applyTemplate(%#v).Paths[0].Get.Produces = %s want to be %s", *file, is, want)
 		}
 
@@ -1943,7 +1961,7 @@ func TestApplyTemplateExtensions(t *testing.T) {
 				MessageType:    []*descriptorpb.DescriptorProto{msgdesc},
 				Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 				Options: &descriptorpb.FileOptions{
-					GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+					GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 				},
 			},
 			GoPkg: descriptor.GoPackage{
@@ -1985,9 +2003,13 @@ func TestApplyTemplateExtensions(t *testing.T) {
 		},
 		Extensions: map[string]*structpb.Value{
 			"x-foo": {Kind: &structpb.Value_StringValue{StringValue: "bar"}},
-			"x-bar": {Kind: &structpb.Value_ListValue{ListValue: &structpb.ListValue{
-				Values: []*structpb.Value{{Kind: &structpb.Value_StringValue{StringValue: "baz"}}},
-			}}},
+			"x-bar": {
+				Kind: &structpb.Value_ListValue{
+					ListValue: &structpb.ListValue{
+						Values: []*structpb.Value{{Kind: &structpb.Value_StringValue{StringValue: "baz"}}},
+					},
+				},
+			},
 		},
 		SecurityDefinitions: &openapi_options.SecurityDefinitions{
 			Security: map[string]*openapi_options.SecurityScheme{
@@ -2020,7 +2042,8 @@ func TestApplyTemplateExtensions(t *testing.T) {
 			"x-op-foo": {Kind: &structpb.Value_StringValue{StringValue: "baz"}},
 		},
 	}
-	verifyTemplateExtensions := func(t *testing.T, reg *descriptor.Registry, file *descriptor.File,
+	verifyTemplateExtensions := func(
+		t *testing.T, reg *descriptor.Registry, file *descriptor.File,
 		opts *openapiconfig.OpenAPIOptions,
 	) {
 		if err := AddErrorDefs(reg); err != nil {
@@ -2124,8 +2147,10 @@ func TestApplyTemplateExtensions(t *testing.T) {
 	}
 	t.Run("verify template options set via proto options", func(t *testing.T) {
 		file := newFile()
-		proto.SetExtension(proto.Message(file.FileDescriptorProto.Options), openapi_options.E_Openapiv2Swagger, &swagger)
-		proto.SetExtension(proto.Message(file.Services[0].Methods[0].Options), openapi_options.E_Openapiv2Operation, &openapiOperation)
+		proto.SetExtension(proto.Message(file.FileDescriptorProto.Options), openapi_options.E_Openapiv2Swagger,
+			&swagger)
+		proto.SetExtension(proto.Message(file.Services[0].Methods[0].Options), openapi_options.E_Openapiv2Operation,
+			&openapiOperation)
 		reg := descriptor.NewRegistry()
 		verifyTemplateExtensions(t, reg, file, nil)
 	})
@@ -2176,7 +2201,7 @@ func TestApplyTemplateHeaders(t *testing.T) {
 				MessageType:    []*descriptorpb.DescriptorProto{msgdesc},
 				Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 				Options: &descriptorpb.FileOptions{
-					GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+					GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 				},
 			},
 			GoPkg: descriptor.GoPackage{
@@ -2242,7 +2267,8 @@ func TestApplyTemplateHeaders(t *testing.T) {
 			},
 		},
 	}
-	verifyTemplateHeaders := func(t *testing.T, reg *descriptor.Registry, file *descriptor.File,
+	verifyTemplateHeaders := func(
+		t *testing.T, reg *descriptor.Registry, file *descriptor.File,
 		opts *openapiconfig.OpenAPIOptions,
 	) {
 		if err := AddErrorDefs(reg); err != nil {
@@ -2306,7 +2332,8 @@ func TestApplyTemplateHeaders(t *testing.T) {
 	}
 	t.Run("verify template options set via proto options", func(t *testing.T) {
 		file := newFile()
-		proto.SetExtension(proto.Message(file.Services[0].Methods[0].Options), openapi_options.E_Openapiv2Operation, &openapiOperation)
+		proto.SetExtension(proto.Message(file.Services[0].Methods[0].Options), openapi_options.E_Openapiv2Operation,
+			&openapiOperation)
 		reg := descriptor.NewRegistry()
 		verifyTemplateHeaders(t, reg, file, nil)
 	})
@@ -2779,7 +2806,7 @@ func TestApplyTemplateRequestWithoutClientStreaming(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{msgdesc, nesteddesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -2939,7 +2966,7 @@ func TestApplyTemplateRequestWithClientStreaming(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{msgdesc, nesteddesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -3015,36 +3042,45 @@ func TestApplyTemplateRequestWithClientStreaming(t *testing.T) {
 		t.Errorf("applyTemplate(%#v).%s = %d want to be %d", file, name, got, want)
 	}
 	if _, ok := result.getPathItemObject("/v1/echo").Post.Responses["200"]; !ok {
-		t.Errorf("applyTemplate(%#v).%s = expected 200 response to be defined", file, `result.getPathItemObject("/v1/echo").Post.Responses["200"]`)
+		t.Errorf("applyTemplate(%#v).%s = expected 200 response to be defined", file,
+			`result.getPathItemObject("/v1/echo").Post.Responses["200"]`)
 	} else {
-		if want, got, name := "A successful response.(streaming responses)", result.getPathItemObject("/v1/echo").Post.Responses["200"].Description, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Description`; !reflect.DeepEqual(got, want) {
+		if want, got, name := "A successful response.(streaming responses)", result.getPathItemObject("/v1/echo").Post.Responses["200"].Description, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Description`; !reflect.DeepEqual(got,
+			want) {
 			t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, got, want)
 		}
 		streamExampleExampleMessage := result.getPathItemObject("/v1/echo").Post.Responses["200"].Schema
-		if want, got, name := "object", streamExampleExampleMessage.Type, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Schema.Type`; !reflect.DeepEqual(got, want) {
+		if want, got, name := "object", streamExampleExampleMessage.Type, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Schema.Type`; !reflect.DeepEqual(got,
+			want) {
 			t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, got, want)
 		}
-		if want, got, name := "Stream result of exampleExampleMessage", streamExampleExampleMessage.Title, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Schema.Title`; !reflect.DeepEqual(got, want) {
+		if want, got, name := "Stream result of exampleExampleMessage", streamExampleExampleMessage.Title, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Schema.Title`; !reflect.DeepEqual(got,
+			want) {
 			t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, got, want)
 		}
 		streamExampleExampleMessageProperties := *(streamExampleExampleMessage.Properties)
-		if want, got, name := 2, len(streamExampleExampleMessageProperties), `len(StreamDefinitions["exampleExampleMessage"].Properties)`; !reflect.DeepEqual(got, want) {
+		if want, got, name := 2, len(streamExampleExampleMessageProperties), `len(StreamDefinitions["exampleExampleMessage"].Properties)`; !reflect.DeepEqual(got,
+			want) {
 			t.Errorf("applyTemplate(%#v).%s = %d want to be %d", file, name, got, want)
 		} else {
 			resultProperty := streamExampleExampleMessageProperties[0]
-			if want, got, name := "result", resultProperty.Key, `(*(StreamDefinitions["exampleExampleMessage"].Properties))[0].Key`; !reflect.DeepEqual(got, want) {
+			if want, got, name := "result", resultProperty.Key, `(*(StreamDefinitions["exampleExampleMessage"].Properties))[0].Key`; !reflect.DeepEqual(got,
+				want) {
 				t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, got, want)
 			}
 			result := resultProperty.Value.(openapiSchemaObject)
-			if want, got, name := "#/definitions/exampleExampleMessage", result.Ref, `((*(StreamDefinitions["exampleExampleMessage"].Properties))[0].Value.(openapiSchemaObject)).Ref`; !reflect.DeepEqual(got, want) {
+			if want, got, name := "#/definitions/exampleExampleMessage", result.Ref, `((*(StreamDefinitions["exampleExampleMessage"].Properties))[0].Value.(openapiSchemaObject)).Ref`; !reflect.DeepEqual(got,
+				want) {
 				t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, got, want)
 			}
 			errorProperty := streamExampleExampleMessageProperties[1]
-			if want, got, name := "error", errorProperty.Key, `(*(StreamDefinitions["exampleExampleMessage"].Properties))[0].Key`; !reflect.DeepEqual(got, want) {
+			if want, got, name := "error", errorProperty.Key, `(*(StreamDefinitions["exampleExampleMessage"].Properties))[0].Key`; !reflect.DeepEqual(got,
+				want) {
 				t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, got, want)
 			}
 			err := errorProperty.Value.(openapiSchemaObject)
-			if want, got, name := "#/definitions/rpcStatus", err.Ref, `((*(StreamDefinitions["exampleExampleMessage"].Properties))[0].Value.(openapiSchemaObject)).Ref`; !reflect.DeepEqual(got, want) {
+			if want, got, name := "#/definitions/rpcStatus", err.Ref, `((*(StreamDefinitions["exampleExampleMessage"].Properties))[0].Value.(openapiSchemaObject)).Ref`; !reflect.DeepEqual(got,
+				want) {
 				t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, got, want)
 			}
 		}
@@ -3122,7 +3158,7 @@ func TestApplyTemplateRequestWithServerStreamingAndNoStandardErrors(t *testing.T
 			MessageType:    []*descriptorpb.DescriptorProto{msgdesc, nesteddesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -3199,28 +3235,35 @@ func TestApplyTemplateRequestWithServerStreamingAndNoStandardErrors(t *testing.T
 		t.Errorf("applyTemplate(%#v).%s = %d want to be %d", file, name, got, want)
 	}
 	if _, ok := result.getPathItemObject("/v1/echo").Post.Responses["200"]; !ok {
-		t.Errorf("applyTemplate(%#v).%s = expected 200 response to be defined", file, `result.getPathItemObject("/v1/echo").Post.Responses["200"]`)
+		t.Errorf("applyTemplate(%#v).%s = expected 200 response to be defined", file,
+			`result.getPathItemObject("/v1/echo").Post.Responses["200"]`)
 	} else {
-		if want, got, name := "A successful response.(streaming responses)", result.getPathItemObject("/v1/echo").Post.Responses["200"].Description, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Description`; !reflect.DeepEqual(got, want) {
+		if want, got, name := "A successful response.(streaming responses)", result.getPathItemObject("/v1/echo").Post.Responses["200"].Description, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Description`; !reflect.DeepEqual(got,
+			want) {
 			t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, got, want)
 		}
 		streamExampleExampleMessage := result.getPathItemObject("/v1/echo").Post.Responses["200"].Schema
-		if want, got, name := "object", streamExampleExampleMessage.Type, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Schema.Type`; !reflect.DeepEqual(got, want) {
+		if want, got, name := "object", streamExampleExampleMessage.Type, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Schema.Type`; !reflect.DeepEqual(got,
+			want) {
 			t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, got, want)
 		}
-		if want, got, name := "Stream result of exampleExampleMessage", streamExampleExampleMessage.Title, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Schema.Title`; !reflect.DeepEqual(got, want) {
+		if want, got, name := "Stream result of exampleExampleMessage", streamExampleExampleMessage.Title, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Schema.Title`; !reflect.DeepEqual(got,
+			want) {
 			t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, got, want)
 		}
 		streamExampleExampleMessageProperties := *(streamExampleExampleMessage.Properties)
-		if want, got, name := 1, len(streamExampleExampleMessageProperties), `len(StreamDefinitions["exampleExampleMessage"].Properties)`; !reflect.DeepEqual(got, want) {
+		if want, got, name := 1, len(streamExampleExampleMessageProperties), `len(StreamDefinitions["exampleExampleMessage"].Properties)`; !reflect.DeepEqual(got,
+			want) {
 			t.Errorf("applyTemplate(%#v).%s = %d want to be %d", file, name, got, want)
 		} else {
 			resultProperty := streamExampleExampleMessageProperties[0]
-			if want, got, name := "result", resultProperty.Key, `(*(StreamDefinitions["exampleExampleMessage"].Properties))[0].Key`; !reflect.DeepEqual(got, want) {
+			if want, got, name := "result", resultProperty.Key, `(*(StreamDefinitions["exampleExampleMessage"].Properties))[0].Key`; !reflect.DeepEqual(got,
+				want) {
 				t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, got, want)
 			}
 			result := resultProperty.Value.(openapiSchemaObject)
-			if want, got, name := "#/definitions/exampleExampleMessage", result.Ref, `((*(StreamDefinitions["exampleExampleMessage"].Properties))[0].Value.(openapiSchemaObject)).Ref`; !reflect.DeepEqual(got, want) {
+			if want, got, name := "#/definitions/exampleExampleMessage", result.Ref, `((*(StreamDefinitions["exampleExampleMessage"].Properties))[0].Value.(openapiSchemaObject)).Ref`; !reflect.DeepEqual(got,
+				want) {
 				t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, got, want)
 			}
 		}
@@ -3278,7 +3321,7 @@ func TestApplyTemplateRequestWithUnusedReferences(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{reqdesc, respdesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -3448,7 +3491,7 @@ func TestApplyTemplateRequestWithBodyQueryParameters(t *testing.T) {
 				MessageType:    []*descriptorpb.DescriptorProto{bookDesc, createDesc},
 				Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 				Options: &descriptorpb.FileOptions{
-					GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+					GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 				},
 			},
 			GoPkg: descriptor.GoPackage{
@@ -3523,11 +3566,13 @@ func TestApplyTemplateRequestWithBodyQueryParameters(t *testing.T) {
 		},
 		{
 			name: "book_in_query",
-			args: args{file: func() descriptor.File {
-				f := newFile()
-				f.Services[0].Methods[0].Bindings[0].Body = nil
-				return f
-			}()},
+			args: args{
+				file: func() descriptor.File {
+					f := newFile()
+					f.Services[0].Methods[0].Bindings[0].Body = nil
+					return f
+				}(),
+			},
 			want: []paramOut{
 				{"parent", "path", true},
 				{"book", "query", false},
@@ -3556,16 +3601,21 @@ func TestApplyTemplateRequestWithBodyQueryParameters(t *testing.T) {
 			}
 
 			if _, ok := result.getPathItemObject("/v1/{parent}/books").Post.Responses["200"]; !ok {
-				t.Errorf("applyTemplate(%#v).%s = expected 200 response to be defined", tt.args.file, `result.getPathItemObject("/v1/{parent}/books").Post.Responses["200"]`)
+				t.Errorf("applyTemplate(%#v).%s = expected 200 response to be defined", tt.args.file,
+					`result.getPathItemObject("/v1/{parent}/books").Post.Responses["200"]`)
 			} else {
 
-				if want, got, name := 3, len(result.getPathItemObject("/v1/{parent}/books").Post.Parameters), `len(result.getPathItemObject("/v1/{parent}/books").Post.Parameters)`; !reflect.DeepEqual(got, want) {
+				if want, got, name := 3, len(result.getPathItemObject("/v1/{parent}/books").Post.Parameters), `len(result.getPathItemObject("/v1/{parent}/books").Post.Parameters)`; !reflect.DeepEqual(got,
+					want) {
 					t.Errorf("applyTemplate(%#v).%s = %d want to be %d", tt.args.file, name, got, want)
 				}
 
 				for i, want := range tt.want {
 					p := result.getPathItemObject("/v1/{parent}/books").Post.Parameters[i]
-					if got, name := (paramOut{p.Name, p.In, p.Required}), `result.getPathItemObject("/v1/{parent}/books").Post.Parameters[0]`; !reflect.DeepEqual(got, want) {
+					if got, name := (paramOut{
+						p.Name, p.In, p.Required,
+					}), `result.getPathItemObject("/v1/{parent}/books").Post.Parameters[0]`; !reflect.DeepEqual(got,
+						want) {
 						t.Errorf("applyTemplate(%#v).%s = %v want to be %v", tt.args.file, name, got, want)
 					}
 				}
@@ -3662,7 +3712,7 @@ func TestApplyTemplateWithRequestAndBodyParameters(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{bookDesc, createDesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -3743,10 +3793,12 @@ func TestApplyTemplateWithRequestAndBodyParameters(t *testing.T) {
 	if want, is, name := 1, len(result.Paths), "len(result.Paths)"; !reflect.DeepEqual(is, want) {
 		t.Errorf("%s = %d want to be %d", name, want, is)
 	}
-	if want, is, name := 4, len(result.Paths[0].PathItemObject.Post.Parameters), "len(result.Paths[0].PathItemObject.Post.Parameters)"; !reflect.DeepEqual(is, want) {
+	if want, is, name := 4, len(result.Paths[0].PathItemObject.Post.Parameters), "len(result.Paths[0].PathItemObject.Post.Parameters)"; !reflect.DeepEqual(is,
+		want) {
 		t.Errorf("%s = %d want to be %d", name, want, is)
 	}
-	if want, is, name := "#/definitions/BookServiceCreateBookBody", result.Paths[0].PathItemObject.Post.Parameters[1].Schema.schemaCore.Ref, "result.Paths[0].PathItemObject.Post.Parameters[1].Schema.schemaCore.Ref"; !reflect.DeepEqual(is, want) {
+	if want, is, name := "#/definitions/BookServiceCreateBookBody", result.Paths[0].PathItemObject.Post.Parameters[1].Schema.schemaCore.Ref, "result.Paths[0].PathItemObject.Post.Parameters[1].Schema.schemaCore.Ref"; !reflect.DeepEqual(is,
+		want) {
 		t.Errorf("%s = %s want to be %s", name, want, is)
 	}
 
@@ -3884,7 +3936,7 @@ func TestApplyTemplateProtobufAny(t *testing.T) {
 					MessageType:    []*descriptorpb.DescriptorProto{reqdesc, respdesc},
 					Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 					Options: &descriptorpb.FileOptions{
-						GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+						GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 					},
 				},
 				GoPkg: descriptor.GoPackage{
@@ -3939,7 +3991,8 @@ func TestApplyTemplateProtobufAny(t *testing.T) {
 				anyDescriptorProto.SourceCodeInfo = &descriptorpb.SourceCodeInfo{}
 
 				// prepend the anyDescriptorProto to the protoFiles slice so that the dependency can be resolved
-				protoFiles = append(append(make([]*descriptorpb.FileDescriptorProto, 0, len(protoFiles)+1), anyDescriptorProto), protoFiles[0:]...)
+				protoFiles = append(append(make([]*descriptorpb.FileDescriptorProto, 0, len(protoFiles)+1),
+					anyDescriptorProto), protoFiles[0:]...)
 			}
 
 			err := reg.Load(&pluginpb.CodeGeneratorRequest{
@@ -3960,7 +4013,8 @@ func TestApplyTemplateProtobufAny(t *testing.T) {
 				return
 			}
 
-			if want, got, name := tt.wantNumDefinitions, len(result.Definitions), "len(Definitions)"; !reflect.DeepEqual(got, want) {
+			if want, got, name := tt.wantNumDefinitions, len(result.Definitions), "len(Definitions)"; !reflect.DeepEqual(got,
+				want) {
 				t.Errorf("applyTemplate(%#v).%s = %d want to be %d", file, name, got, want)
 			}
 
@@ -4044,7 +4098,8 @@ func TestTemplateWithJsonCamelCase(t *testing.T) {
 	reg := descriptor.NewRegistry()
 	reg.SetUseJSONNamesForFields(true)
 	for _, data := range tests {
-		actual := templateToOpenAPIPath(data.input, reg, generateFieldsForJSONReservedName(), generateMsgsForJSONReservedName(), make(map[string]string))
+		actual := templateToOpenAPIPath(data.input, reg, generateFieldsForJSONReservedName(),
+			generateMsgsForJSONReservedName(), make(map[string]string))
 		if data.expected != actual {
 			t.Errorf("Expected templateToOpenAPIPath(%v) = %v, actual: %v", data.input, data.expected, actual)
 		}
@@ -4072,7 +4127,8 @@ func TestTemplateWithoutJsonCamelCase(t *testing.T) {
 	reg := descriptor.NewRegistry()
 	reg.SetUseJSONNamesForFields(false)
 	for _, data := range tests {
-		actual := templateToOpenAPIPath(data.input, reg, generateFieldsForJSONReservedName(), generateMsgsForJSONReservedName(), make(map[string]string))
+		actual := templateToOpenAPIPath(data.input, reg, generateFieldsForJSONReservedName(),
+			generateMsgsForJSONReservedName(), make(map[string]string))
 		if data.expected != actual {
 			t.Errorf("Expected templateToOpenAPIPath(%v) = %v, actual: %v", data.input, data.expected, actual)
 		}
@@ -4104,14 +4160,16 @@ func TestTemplateToOpenAPIPath(t *testing.T) {
 	reg := descriptor.NewRegistry()
 	reg.SetUseJSONNamesForFields(false)
 	for _, data := range tests {
-		actual := templateToOpenAPIPath(data.input, reg, generateFieldsForJSONReservedName(), generateMsgsForJSONReservedName(), make(map[string]string))
+		actual := templateToOpenAPIPath(data.input, reg, generateFieldsForJSONReservedName(),
+			generateMsgsForJSONReservedName(), make(map[string]string))
 		if data.expected != actual {
 			t.Errorf("Expected templateToOpenAPIPath(%v) = %v, actual: %v", data.input, data.expected, actual)
 		}
 	}
 	reg.SetUseJSONNamesForFields(true)
 	for _, data := range tests {
-		actual := templateToOpenAPIPath(data.input, reg, generateFieldsForJSONReservedName(), generateMsgsForJSONReservedName(), make(map[string]string))
+		actual := templateToOpenAPIPath(data.input, reg, generateFieldsForJSONReservedName(),
+			generateMsgsForJSONReservedName(), make(map[string]string))
 		if data.expected != actual {
 			t.Errorf("Expected templateToOpenAPIPath(%v) = %v, actual: %v", data.input, data.expected, actual)
 		}
@@ -4138,10 +4196,12 @@ func getParameters(names []string) []descriptor.Parameter {
 				FieldMessage:      nil,
 				ForcePrefixedName: false,
 			},
-			FieldPath: []descriptor.FieldPathComponent{{
-				Name:   name,
-				Target: nil,
-			}},
+			FieldPath: []descriptor.FieldPathComponent{
+				{
+					Name:   name,
+					Target: nil,
+				},
+			},
 			Method: nil,
 		})
 	}
@@ -4156,19 +4216,36 @@ func TestTemplateToOpenAPIPathExpandSlashed(t *testing.T) {
 		expectedPathParams []string
 		useJSONNames       bool
 	}{
-		{"/v1/{name=projects/*/documents/*}:exportResults", "/v1/projects/{project}/documents/{document}:exportResults", getParameters([]string{"name"}), []string{"project", "document"}, true},
+		{
+			"/v1/{name=projects/*/documents/*}:exportResults",
+			"/v1/projects/{project}/documents/{document}:exportResults", getParameters([]string{"name"}),
+			[]string{"project", "document"}, true,
+		},
 		{"/test/{name=*}", "/test/{name}", getParameters([]string{"name"}), []string{"name"}, true},
 		{"/test/{name=*}/", "/test/{name}/", getParameters([]string{"name"}), []string{"name"}, true},
-		{"/test/{name=test_cases/*}/", "/test/test_cases/{testCase}/", getParameters([]string{"name"}), []string{"testCase"}, true},
-		{"/test/{name=test_cases/*}/", "/test/test_cases/{test_case}/", getParameters([]string{"name"}), []string{"test_case"}, false},
-		{"/test/{test_type.name=test_cases/*}/", "/test/test_cases/{testCase}/", getParameters([]string{"test_type.name"}), []string{"testCase"}, true},
-		{"/test/{test_type.name=test_cases/*}/", "/test/test_cases/{test_case}/", getParameters([]string{"test_type.name"}), []string{"test_case"}, false},
+		{
+			"/test/{name=test_cases/*}/", "/test/test_cases/{testCase}/", getParameters([]string{"name"}),
+			[]string{"testCase"}, true,
+		},
+		{
+			"/test/{name=test_cases/*}/", "/test/test_cases/{test_case}/", getParameters([]string{"name"}),
+			[]string{"test_case"}, false,
+		},
+		{
+			"/test/{test_type.name=test_cases/*}/", "/test/test_cases/{testCase}/",
+			getParameters([]string{"test_type.name"}), []string{"testCase"}, true,
+		},
+		{
+			"/test/{test_type.name=test_cases/*}/", "/test/test_cases/{test_case}/",
+			getParameters([]string{"test_type.name"}), []string{"test_case"}, false,
+		},
 	}
 	reg := descriptor.NewRegistry()
 	reg.SetExpandSlashedPathPatterns(true)
 	for _, data := range tests {
 		reg.SetUseJSONNamesForFields(data.useJSONNames)
-		actualParts, actualParams := templateToExpandedPath(data.input, reg, generateFieldsForJSONReservedName(), generateMsgsForJSONReservedName(), data.pathParams)
+		actualParts, actualParams := templateToExpandedPath(data.input, reg, generateFieldsForJSONReservedName(),
+			generateMsgsForJSONReservedName(), data.pathParams)
 		if data.expected != actualParts {
 			t.Errorf("Expected templateToOpenAPIPath(%v) = %v, actual: %v", data.input, data.expected, actualParts)
 		}
@@ -4177,7 +4254,8 @@ func TestTemplateToOpenAPIPathExpandSlashed(t *testing.T) {
 			pathParamsNames = append(pathParamsNames, param.FieldPath[0].Name)
 		}
 		if !reflect.DeepEqual(data.expectedPathParams, pathParamsNames) {
-			t.Errorf("Expected mutated path params in templateToOpenAPIPath(%v) = %v, actual: %v", data.input, data.expectedPathParams, data.pathParams)
+			t.Errorf("Expected mutated path params in templateToOpenAPIPath(%v) = %v, actual: %v", data.input,
+				data.expectedPathParams, data.pathParams)
 		}
 	}
 }
@@ -4196,7 +4274,8 @@ func TestExpandedPathParametersStringType(t *testing.T) {
 		},
 	}
 	for _, data := range tests {
-		_, actualParams := templateToExpandedPath(data.input, reg, generateFieldsForJSONReservedName(), generateMsgsForJSONReservedName(), getParameters([]string{"name"}))
+		_, actualParams := templateToExpandedPath(data.input, reg, generateFieldsForJSONReservedName(),
+			generateMsgsForJSONReservedName(), getParameters([]string{"name"}))
 		for _, param := range actualParams {
 			refs := make(refMap)
 			actualParamType := schemaOfField(param.Target, reg, refs)
@@ -4215,7 +4294,8 @@ func BenchmarkTemplateToOpenAPIPath(b *testing.B) {
 		reg.SetUseJSONNamesForFields(false)
 
 		for i := 0; i < b.N; i++ {
-			_ = templateToOpenAPIPath(input, reg, generateFieldsForJSONReservedName(), generateMsgsForJSONReservedName(), make(map[string]string))
+			_ = templateToOpenAPIPath(input, reg, generateFieldsForJSONReservedName(),
+				generateMsgsForJSONReservedName(), make(map[string]string))
 		}
 	})
 
@@ -4224,7 +4304,8 @@ func BenchmarkTemplateToOpenAPIPath(b *testing.B) {
 		reg.SetUseJSONNamesForFields(true)
 
 		for i := 0; i < b.N; i++ {
-			_ = templateToOpenAPIPath(input, reg, generateFieldsForJSONReservedName(), generateMsgsForJSONReservedName(), make(map[string]string))
+			_ = templateToOpenAPIPath(input, reg, generateFieldsForJSONReservedName(),
+				generateMsgsForJSONReservedName(), make(map[string]string))
 		}
 	})
 }
@@ -4312,15 +4393,32 @@ func TestResolveFullyQualifiedNameToOpenAPIName(t *testing.T) {
 	}
 }
 
-func templateToOpenAPIPath(path string, reg *descriptor.Registry, fields []*descriptor.Field, msgs []*descriptor.Message, pathParamNames map[string]string) string {
+func templateToOpenAPIPath(
+	path string,
+	reg *descriptor.Registry,
+	fields []*descriptor.Field,
+	msgs []*descriptor.Message,
+	pathParamNames map[string]string,
+) string {
 	return partsToOpenAPIPath(templateToParts(path, reg, fields, msgs), pathParamNames)
 }
 
-func templateToRegexpMap(path string, reg *descriptor.Registry, fields []*descriptor.Field, msgs []*descriptor.Message) map[string]string {
+func templateToRegexpMap(
+	path string,
+	reg *descriptor.Registry,
+	fields []*descriptor.Field,
+	msgs []*descriptor.Message,
+) map[string]string {
 	return partsToRegexpMap(templateToParts(path, reg, fields, msgs))
 }
 
-func templateToExpandedPath(path string, reg *descriptor.Registry, fields []*descriptor.Field, msgs []*descriptor.Message, pathParams []descriptor.Parameter) (string, []descriptor.Parameter) {
+func templateToExpandedPath(
+	path string,
+	reg *descriptor.Registry,
+	fields []*descriptor.Field,
+	msgs []*descriptor.Message,
+	pathParams []descriptor.Parameter,
+) (string, []descriptor.Parameter) {
 	pathParts, pathParams := expandPathPatterns(templateToParts(path, reg, fields, msgs), pathParams, reg)
 	return partsToOpenAPIPath(pathParts, make(map[string]string)), pathParams
 }
@@ -4332,17 +4430,26 @@ func TestFQMNToRegexpMap(t *testing.T) {
 	}{
 		{"/test", map[string]string{}},
 		{"/{test}", map[string]string{}},
-		{"/{test" + pathParamUniqueSuffixDeliminator + "1=prefix/*}", map[string]string{"test" + pathParamUniqueSuffixDeliminator + "1": "prefix/[^/]+"}},
-		{"/{test=prefix/that/has/multiple/parts/to/it/**}", map[string]string{"test": "prefix/that/has/multiple/parts/to/it/.+"}},
-		{"/{test1=organizations/*}/{test2=divisions/*}", map[string]string{
+		{
+			"/{test" + pathParamUniqueSuffixDeliminator + "1=prefix/*}",
+			map[string]string{"test" + pathParamUniqueSuffixDeliminator + "1": "prefix/[^/]+"},
+		},
+		{
+			"/{test=prefix/that/has/multiple/parts/to/it/**}",
+			map[string]string{"test": "prefix/that/has/multiple/parts/to/it/.+"},
+		},
+		{
+			"/{test1=organizations/*}/{test2=divisions/*}", map[string]string{
 			"test1": "organizations/[^/]+",
 			"test2": "divisions/[^/]+",
-		}},
+		},
+		},
 		{"/v1/{name=projects/*/topics/*}:delete", map[string]string{"name": "projects/[^/]+/topics/[^/]+"}},
 	}
 	reg := descriptor.NewRegistry()
 	for _, data := range tests {
-		actual := templateToRegexpMap(data.input, reg, generateFieldsForJSONReservedName(), generateMsgsForJSONReservedName())
+		actual := templateToRegexpMap(data.input, reg, generateFieldsForJSONReservedName(),
+			generateMsgsForJSONReservedName())
 		if !reflect.DeepEqual(data.expected, actual) {
 			t.Errorf("Expected partsToRegexpMap(%v) = %v, actual: %v", data.input, data.expected, actual)
 		}
@@ -4365,14 +4472,16 @@ func TestFQMNtoOpenAPIName(t *testing.T) {
 	reg := descriptor.NewRegistry()
 	reg.SetUseJSONNamesForFields(false)
 	for _, data := range tests {
-		actual := templateToOpenAPIPath(data.input, reg, generateFieldsForJSONReservedName(), generateMsgsForJSONReservedName(), make(map[string]string))
+		actual := templateToOpenAPIPath(data.input, reg, generateFieldsForJSONReservedName(),
+			generateMsgsForJSONReservedName(), make(map[string]string))
 		if data.expected != actual {
 			t.Errorf("Expected templateToOpenAPIPath(%v) = %v, actual: %v", data.input, data.expected, actual)
 		}
 	}
 	reg.SetUseJSONNamesForFields(true)
 	for _, data := range tests {
-		actual := templateToOpenAPIPath(data.input, reg, generateFieldsForJSONReservedName(), generateMsgsForJSONReservedName(), make(map[string]string))
+		actual := templateToOpenAPIPath(data.input, reg, generateFieldsForJSONReservedName(),
+			generateMsgsForJSONReservedName(), make(map[string]string))
 		if data.expected != actual {
 			t.Errorf("Expected templateToOpenAPIPath(%v) = %v, actual: %v", data.input, data.expected, actual)
 		}
@@ -4729,9 +4838,11 @@ func TestSchemaOfField(t *testing.T) {
 			expected: openapiSchemaObject{
 				schemaCore: schemaCore{
 					Type: "array",
-					Items: &openapiItemsObject{schemaCore: schemaCore{
-						Type: "object",
-					}},
+					Items: &openapiItemsObject{
+						schemaCore: schemaCore{
+							Type: "object",
+						},
+					},
 				},
 			},
 		},
@@ -4800,9 +4911,11 @@ func TestSchemaOfField(t *testing.T) {
 			expected: openapiSchemaObject{
 				schemaCore: schemaCore{
 					Type: "array",
-					Items: &openapiItemsObject{schemaCore: schemaCore{
-						Type: "string",
-					}},
+					Items: &openapiItemsObject{
+						schemaCore: schemaCore{
+							Type: "string",
+						},
+					},
 				},
 				Title:       "field title",
 				Description: "field description",
@@ -4895,9 +5008,11 @@ func TestSchemaOfField(t *testing.T) {
 			expected: openapiSchemaObject{
 				schemaCore: schemaCore{
 					Type: "array",
-					Items: &openapiItemsObject{schemaCore: schemaCore{
-						Type: "string",
-					}},
+					Items: &openapiItemsObject{
+						schemaCore: schemaCore{
+							Type: "string",
+						},
+					},
 				},
 				Title:       "field title",
 				Description: "field description",
@@ -5238,7 +5353,7 @@ func TestSchemaOfField(t *testing.T) {
 					Package:        proto.String("example"),
 					Dependency:     []string{"third_party/google.proto"},
 					Options: &descriptorpb.FileOptions{
-						GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+						GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 					},
 					MessageType: []*descriptorpb.DescriptorProto{
 						{
@@ -5383,10 +5498,12 @@ func TestRenderMessagesAsDefinition(t *testing.T) {
 				},
 			},
 			defs: map[string]openapiSchemaObject{
-				"Message": {schemaCore: schemaCore{
-					Type:    "object",
-					Example: RawExample(`{"foo":"bar"}`),
-				}},
+				"Message": {
+					schemaCore: schemaCore{
+						Type:    "object",
+						Example: RawExample(`{"foo":"bar"}`),
+					},
+				},
 			},
 		},
 		{
@@ -5400,10 +5517,12 @@ func TestRenderMessagesAsDefinition(t *testing.T) {
 				},
 			},
 			defs: map[string]openapiSchemaObject{
-				"Message": {schemaCore: schemaCore{
-					Type:    "object",
-					Example: RawExample(`XXXX anything goes XXXX`),
-				}},
+				"Message": {
+					schemaCore: schemaCore{
+						Type:    "object",
+						Example: RawExample(`XXXX anything goes XXXX`),
+					},
+				},
 			},
 		},
 		{
@@ -5821,7 +5940,7 @@ func TestRenderMessagesAsDefinition(t *testing.T) {
 				{
 					FieldPath: descriptor.FieldPath{
 						descriptor.FieldPathComponent{
-							Name: ("aPathParameter"),
+							Name: "aPathParameter",
 						},
 					},
 				},
@@ -5977,9 +6096,11 @@ func TestRenderMessagesAsDefinition(t *testing.T) {
 							Options:  fieldBehaviorOutputOnlyOptions,
 						},
 					},
-					NestedType: []*descriptorpb.DescriptorProto{{
-						Name: proto.String("Nested"),
-					}},
+					NestedType: []*descriptorpb.DescriptorProto{
+						{
+							Name: proto.String("Nested"),
+						},
+					},
 				},
 			},
 			UseAllOfForRefs: true,
@@ -6050,7 +6171,7 @@ func TestRenderMessagesAsDefinition(t *testing.T) {
 					EnumType:       []*descriptorpb.EnumDescriptorProto{},
 					Service:        []*descriptorpb.ServiceDescriptorProto{},
 					Options: &descriptorpb.FileOptions{
-						GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+						GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 					},
 				},
 				Messages: msgs,
@@ -6285,14 +6406,16 @@ func TestUpdateOpenAPIDataFromComments(t *testing.T) {
 					t.Errorf("unexpected error '%v'", err)
 				}
 				if !reflect.DeepEqual(test.openapiSwaggerObject, test.expectedOpenAPIObject) {
-					t.Errorf("openapiSwaggerObject was not updated correctly, expected '%+v', got '%+v'", test.expectedOpenAPIObject, test.openapiSwaggerObject)
+					t.Errorf("openapiSwaggerObject was not updated correctly, expected '%+v', got '%+v'",
+						test.expectedOpenAPIObject, test.openapiSwaggerObject)
 				}
 			} else {
 				if err == nil {
 					t.Error("expected update error not returned")
 				}
 				if !reflect.DeepEqual(test.openapiSwaggerObject, test.expectedOpenAPIObject) {
-					t.Errorf("openapiSwaggerObject was not updated correctly, expected '%+v', got '%+v'", test.expectedOpenAPIObject, test.openapiSwaggerObject)
+					t.Errorf("openapiSwaggerObject was not updated correctly, expected '%+v', got '%+v'",
+						test.expectedOpenAPIObject, test.openapiSwaggerObject)
 				}
 				if err.Error() != test.expectedError.Error() {
 					t.Errorf("expected error malformed, expected %q, got %q", test.expectedError.Error(), err.Error())
@@ -6501,7 +6624,7 @@ func TestMessageOptionsWithGoTemplate(t *testing.T) {
 					EnumType:       []*descriptorpb.EnumDescriptorProto{},
 					Service:        []*descriptorpb.ServiceDescriptorProto{},
 					Options: &descriptorpb.FileOptions{
-						GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+						GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 					},
 				},
 				Messages: msgs,
@@ -6566,7 +6689,7 @@ func TestTagsWithGoTemplate(t *testing.T) {
 			EnumType:       []*descriptorpb.EnumDescriptorProto{},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		Messages: []*descriptor.Message{},
@@ -6664,7 +6787,7 @@ func TestTemplateWithoutErrorDefinition(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{msgdesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -6809,10 +6932,12 @@ func TestSingleServiceTemplateWithDuplicateHttp1Operations(t *testing.T) {
 			SourceCodeInfo: &descriptorpb.SourceCodeInfo{},
 			Name:           proto.String("service1.proto"),
 			Package:        proto.String("example"),
-			MessageType:    []*descriptorpb.DescriptorProto{getBarMsgDesc, deleteBarMsgDesc, getFooMsgDesc, deleteFooMsgDesc, emptyMsgDesc},
-			Service:        []*descriptorpb.ServiceDescriptorProto{svc1},
+			MessageType: []*descriptorpb.DescriptorProto{
+				getBarMsgDesc, deleteBarMsgDesc, getFooMsgDesc, deleteFooMsgDesc, emptyMsgDesc,
+			},
+			Service: []*descriptorpb.ServiceDescriptorProto{svc1},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -7117,7 +7242,7 @@ func TestSingleServiceTemplateWithDuplicateInAllSupportedHttp1Operations(t *test
 				MessageType:    []*descriptorpb.DescriptorProto{methodBarMsgDesc, methodFooMsgDesc, emptyMsgDesc},
 				Service:        []*descriptorpb.ServiceDescriptorProto{svc1},
 				Options: &descriptorpb.FileOptions{
-					GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+					GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 				},
 			},
 			GoPkg: descriptor.GoPackage{
@@ -7226,7 +7351,8 @@ func TestSingleServiceTemplateWithDuplicateInAllSupportedHttp1Operations(t *test
 			t.Fatalf("First operation %s second param 'in' differed, got %s want %s", method, got, want)
 		}
 
-		secondOpMethod := getOperation(result.getPathItemObject("/v1/{name"+pathParamUniqueSuffixDeliminator+"1}"), method)
+		secondOpMethod := getOperation(result.getPathItemObject("/v1/{name"+pathParamUniqueSuffixDeliminator+"1}"),
+			method)
 		if got, want := secondOpMethod.OperationID, "Service1_"+method+"Bar"; got != want {
 			t.Fatalf("Second operation id %s differed, got %s want %s", method, got, want)
 		}
@@ -7303,7 +7429,7 @@ func TestSingleServiceTemplateWithDuplicateHttp1UnsupportedOperations(t *testing
 			MessageType:    []*descriptorpb.DescriptorProto{unsupportedBarMsgDesc, unsupportedFooMsgDesc, emptyMsgDesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc1},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -7456,7 +7582,7 @@ func TestTemplateWithDuplicateHttp1Operations(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{msgdesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc1, svc2},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -7817,7 +7943,8 @@ func Test_getReservedJsonName(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := getReservedJSONName(tt.args.fieldName, tt.args.messageNameToFieldsToJSONName, tt.args.fieldNameToType); got != tt.want {
+			if got := getReservedJSONName(tt.args.fieldName, tt.args.messageNameToFieldsToJSONName,
+				tt.args.fieldNameToType); got != tt.want {
 				t.Errorf("getReservedJSONName() = %v, want %v", got, tt.want)
 			}
 		})
@@ -7840,7 +7967,7 @@ func TestParseIncompleteSecurityRequirement(t *testing.T) {
 			Name:           proto.String("example.proto"),
 			Package:        proto.String("example"),
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 	}
@@ -7975,7 +8102,7 @@ func TestRenderServicesParameterDescriptionNoFieldBody(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{aMessageDesc, someResponseDesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -8095,7 +8222,7 @@ func TestRenderServicesWithBodyFieldNameInCamelCase(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{userDesc, updateDesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -8289,7 +8416,7 @@ func TestRenderServicesWithBodyFieldHasFieldMask(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{userDesc, updateDesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -8344,22 +8471,24 @@ func TestRenderServicesWithBodyFieldHasFieldMask(t *testing.T) {
 	reg := descriptor.NewRegistry()
 	reg.SetUseJSONNamesForFields(true)
 	reg.SetAllowPatchFeature(true)
-	err := reg.Load(&pluginpb.CodeGeneratorRequest{ProtoFile: []*descriptorpb.FileDescriptorProto{
-		{
-			SourceCodeInfo: &descriptorpb.SourceCodeInfo{},
-			Name:           proto.String("google/well_known.proto"),
-			Package:        proto.String("google.protobuf"),
-			Dependency:     []string{},
-			MessageType: []*descriptorpb.DescriptorProto{
-				protodesc.ToDescriptorProto((&field_mask.FieldMask{}).ProtoReflect().Descriptor()),
+	err := reg.Load(&pluginpb.CodeGeneratorRequest{
+		ProtoFile: []*descriptorpb.FileDescriptorProto{
+			{
+				SourceCodeInfo: &descriptorpb.SourceCodeInfo{},
+				Name:           proto.String("google/well_known.proto"),
+				Package:        proto.String("google.protobuf"),
+				Dependency:     []string{},
+				MessageType: []*descriptorpb.DescriptorProto{
+					protodesc.ToDescriptorProto((&field_mask.FieldMask{}).ProtoReflect().Descriptor()),
+				},
+				Service: []*descriptorpb.ServiceDescriptorProto{},
+				Options: &descriptorpb.FileOptions{
+					GoPackage: proto.String("google/well_known"),
+				},
 			},
-			Service: []*descriptorpb.ServiceDescriptorProto{},
-			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("google/well_known"),
-			},
+			file.FileDescriptorProto,
 		},
-		file.FileDescriptorProto,
-	}})
+	})
 	if err != nil {
 		t.Fatalf("failed to reg.Load(): %v", err)
 	}
@@ -8465,7 +8594,7 @@ func TestRenderServicesWithColonInPath(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{reqDesc, resDesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -8612,7 +8741,7 @@ func TestRenderServicesWithDoubleColonInPath(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{reqDesc, resDesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -8759,7 +8888,7 @@ func TestRenderServicesWithColonLastInPath(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{reqDesc, resDesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -8906,7 +9035,7 @@ func TestRenderServicesWithColonInSegment(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{reqDesc, resDesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -9026,7 +9155,7 @@ func TestRenderServiceWithHeaderParameters(t *testing.T) {
 				MessageType:    []*descriptorpb.DescriptorProto{msgdesc},
 				Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 				Options: &descriptorpb.FileOptions{
-					GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+					GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 				},
 			},
 			GoPkg: descriptor.GoPackage{
@@ -9300,7 +9429,7 @@ func TestRenderServicesOpenapiPathsOrderPreserved(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{reqDesc, resDesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -9452,7 +9581,7 @@ func TestRenderServicesOpenapiPathsOrderPreservedMultipleServices(t *testing.T) 
 			MessageType:    []*descriptorpb.DescriptorProto{reqDesc, resDesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc1, svc2},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -9634,7 +9763,7 @@ func TestRenderServicesOpenapiPathsOrderPreservedAdditionalBindings(t *testing.T
 			MessageType:    []*descriptorpb.DescriptorProto{reqDesc, resDesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -9815,7 +9944,7 @@ func TestRenderServicesOpenapiRequiredBodyFieldContainingPathParam(t *testing.T)
 			MessageType:    []*descriptorpb.DescriptorProto{bookDesc, addBookReqDesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -9901,7 +10030,8 @@ func TestRenderServicesOpenapiRequiredBodyFieldContainingPathParam(t *testing.T)
 		t.Fatalf("Wrong parameter location 1, got %s want %s", got, want)
 	}
 
-	if want, is, name := "#/definitions/BookServiceAddBookBody", operation.Parameters[1].Schema.schemaCore.Ref, "operation.Parameters[1].Schema.schemaCore.Ref"; !reflect.DeepEqual(is, want) {
+	if want, is, name := "#/definitions/BookServiceAddBookBody", operation.Parameters[1].Schema.schemaCore.Ref, "operation.Parameters[1].Schema.schemaCore.Ref"; !reflect.DeepEqual(is,
+		want) {
 		t.Fatalf("%s = %s want to be %s", name, want, is)
 	}
 
@@ -9990,7 +10120,7 @@ func TestArrayMessageItemsType(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{msgDesc, nestDesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -10274,7 +10404,7 @@ func TestQueryParameterType(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{msgDesc, nesteDesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -10305,20 +10435,22 @@ func TestQueryParameterType(t *testing.T) {
 			},
 		},
 	}
-	expect := openapiPathsObject{{
-		Path: "/v1/echo",
-		PathItemObject: openapiPathItemObject{
-			Get: &openapiOperationObject{
-				Parameters: openapiParametersObject{
-					{
-						Name: "Address[string]",
-						In:   "query",
-						Type: "integer",
+	expect := openapiPathsObject{
+		{
+			Path: "/v1/echo",
+			PathItemObject: openapiPathItemObject{
+				Get: &openapiOperationObject{
+					Parameters: openapiParametersObject{
+						{
+							Name: "Address[string]",
+							In:   "query",
+							Type: "integer",
+						},
 					},
 				},
 			},
 		},
-	}}
+	}
 
 	reg := descriptor.NewRegistry()
 	reg.SetUseJSONNamesForFields(false)
@@ -10354,7 +10486,8 @@ func TestQueryParameterType(t *testing.T) {
 		t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, is, want)
 	}
 
-	if want, is, name := expect[0].PathItemObject.Get.Parameters, result.getPathItemObject("/v1/echo").Get.Parameters, "Produces"; !reflect.DeepEqual(is, want) {
+	if want, is, name := expect[0].PathItemObject.Get.Parameters, result.getPathItemObject("/v1/echo").Get.Parameters, "Produces"; !reflect.DeepEqual(is,
+		want) {
 		t.Errorf("applyTemplate(%#v).%s = %v want to be %v", file, name, is, want)
 	}
 	// If there was a failure, print out the input and the json result for debugging.
@@ -10405,7 +10538,7 @@ func TestApplyTemplateRequestWithServerStreamingHttpBody(t *testing.T) {
 			},
 			Service: []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -10461,19 +10594,24 @@ func TestApplyTemplateRequestWithServerStreamingHttpBody(t *testing.T) {
 	}
 
 	if _, ok := result.getPathItemObject("/v1/echo").Post.Responses["200"]; !ok {
-		t.Errorf("applyTemplate(%#v).%s = expected 200 response to be defined", file, `result.getPathItemObject("/v1/echo").Post.Responses["200"]`)
+		t.Errorf("applyTemplate(%#v).%s = expected 200 response to be defined", file,
+			`result.getPathItemObject("/v1/echo").Post.Responses["200"]`)
 	} else {
-		if want, got, name := "A successful response.(streaming responses)", result.getPathItemObject("/v1/echo").Post.Responses["200"].Description, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Description`; !reflect.DeepEqual(got, want) {
+		if want, got, name := "A successful response.(streaming responses)", result.getPathItemObject("/v1/echo").Post.Responses["200"].Description, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Description`; !reflect.DeepEqual(got,
+			want) {
 			t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, got, want)
 		}
 		streamExampleExampleMessage := result.getPathItemObject("/v1/echo").Post.Responses["200"].Schema
-		if want, got, name := "string", streamExampleExampleMessage.Type, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Schema.Type`; !reflect.DeepEqual(got, want) {
+		if want, got, name := "string", streamExampleExampleMessage.Type, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Schema.Type`; !reflect.DeepEqual(got,
+			want) {
 			t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, got, want)
 		}
-		if want, got, name := "binary", streamExampleExampleMessage.Format, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Schema.Format`; !reflect.DeepEqual(got, want) {
+		if want, got, name := "binary", streamExampleExampleMessage.Format, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Schema.Format`; !reflect.DeepEqual(got,
+			want) {
 			t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, got, want)
 		}
-		if want, got, name := "Free form byte stream", streamExampleExampleMessage.Title, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Schema.Title`; !reflect.DeepEqual(got, want) {
+		if want, got, name := "Free form byte stream", streamExampleExampleMessage.Title, `result.getPathItemObject("/v1/echo").Post.Responses["200"].Schema.Title`; !reflect.DeepEqual(got,
+			want) {
 			t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, got, want)
 		}
 		if len(*streamExampleExampleMessage.Properties) != 0 {
@@ -10508,14 +10646,18 @@ func TestGetPathItemObjectSwaggerObjectMethod(t *testing.T) {
 	}{
 		{
 			testName: "Path present in swagger object",
-			swaggerObject: openapiSwaggerObject{Paths: openapiPathsObject{{
-				Path: "a/path",
-				PathItemObject: openapiPathItemObject{
-					Get: &openapiOperationObject{
-						Description: "A testful description",
+			swaggerObject: openapiSwaggerObject{
+				Paths: openapiPathsObject{
+					{
+						Path: "a/path",
+						PathItemObject: openapiPathItemObject{
+							Get: &openapiOperationObject{
+								Description: "A testful description",
+							},
+						},
 					},
 				},
-			}}},
+			},
 			path: "a/path",
 			expectedPathItemObject: openapiPathItemObject{
 				Get: &openapiOperationObject{
@@ -10524,33 +10666,41 @@ func TestGetPathItemObjectSwaggerObjectMethod(t *testing.T) {
 			},
 		}, {
 			testName: "Path not present in swaggerObject",
-			swaggerObject: openapiSwaggerObject{Paths: openapiPathsObject{{
-				Path: "a/path",
-				PathItemObject: openapiPathItemObject{
-					Get: &openapiOperationObject{
-						Description: "A testful description",
+			swaggerObject: openapiSwaggerObject{
+				Paths: openapiPathsObject{
+					{
+						Path: "a/path",
+						PathItemObject: openapiPathItemObject{
+							Get: &openapiOperationObject{
+								Description: "A testful description",
+							},
+						},
 					},
 				},
-			}}},
+			},
 			path:                   "b/path",
 			expectedPathItemObject: openapiPathItemObject{},
 		}, {
 			testName: "Path present in swaggerPathsObject with multiple paths",
-			swaggerObject: openapiSwaggerObject{Paths: openapiPathsObject{{
-				Path: "a/path",
-				PathItemObject: openapiPathItemObject{
-					Get: &openapiOperationObject{
-						Description: "A testful description",
+			swaggerObject: openapiSwaggerObject{
+				Paths: openapiPathsObject{
+					{
+						Path: "a/path",
+						PathItemObject: openapiPathItemObject{
+							Get: &openapiOperationObject{
+								Description: "A testful description",
+							},
+						},
+					}, {
+						Path: "another/path",
+						PathItemObject: openapiPathItemObject{
+							Get: &openapiOperationObject{
+								Description: "Another testful description",
+							},
+						},
 					},
 				},
-			}, {
-				Path: "another/path",
-				PathItemObject: openapiPathItemObject{
-					Get: &openapiOperationObject{
-						Description: "Another testful description",
-					},
-				},
-			}}},
+			},
 			path: "another/path",
 			expectedPathItemObject: openapiPathItemObject{
 				Get: &openapiOperationObject{
@@ -10571,7 +10721,8 @@ func TestGetPathItemObjectSwaggerObjectMethod(t *testing.T) {
 		t.Run(tc.testName, func(t *testing.T) {
 			actualPathItemObject := tc.swaggerObject.getPathItemObject(tc.path)
 			if isEqual := reflect.DeepEqual(actualPathItemObject, tc.expectedPathItemObject); !isEqual {
-				t.Fatalf("Got pathItemObject: %#v, want pathItemObject: %#v", actualPathItemObject, tc.expectedPathItemObject)
+				t.Fatalf("Got pathItemObject: %#v, want pathItemObject: %#v", actualPathItemObject,
+					tc.expectedPathItemObject)
 			}
 		})
 	}
@@ -10587,14 +10738,16 @@ func TestGetPathItemObjectFunction(t *testing.T) {
 	}{
 		{
 			testName: "Path present in openapiPathsObject",
-			paths: openapiPathsObject{{
-				Path: "a/path",
-				PathItemObject: openapiPathItemObject{
-					Get: &openapiOperationObject{
-						Description: "A testful description",
+			paths: openapiPathsObject{
+				{
+					Path: "a/path",
+					PathItemObject: openapiPathItemObject{
+						Get: &openapiOperationObject{
+							Description: "A testful description",
+						},
 					},
 				},
-			}},
+			},
 			path: "a/path",
 			expectedPathItemObject: openapiPathItemObject{
 				Get: &openapiOperationObject{
@@ -10604,34 +10757,38 @@ func TestGetPathItemObjectFunction(t *testing.T) {
 			expectedIsPathPresent: true,
 		}, {
 			testName: "Path not present in openapiPathsObject",
-			paths: openapiPathsObject{{
-				Path: "a/path",
-				PathItemObject: openapiPathItemObject{
-					Get: &openapiOperationObject{
-						Description: "A testful description",
+			paths: openapiPathsObject{
+				{
+					Path: "a/path",
+					PathItemObject: openapiPathItemObject{
+						Get: &openapiOperationObject{
+							Description: "A testful description",
+						},
 					},
 				},
-			}},
+			},
 			path:                   "b/path",
 			expectedPathItemObject: openapiPathItemObject{},
 			expectedIsPathPresent:  false,
 		}, {
 			testName: "Path present in openapiPathsObject with multiple paths",
-			paths: openapiPathsObject{{
-				Path: "a/path",
-				PathItemObject: openapiPathItemObject{
-					Get: &openapiOperationObject{
-						Description: "A testful description",
+			paths: openapiPathsObject{
+				{
+					Path: "a/path",
+					PathItemObject: openapiPathItemObject{
+						Get: &openapiOperationObject{
+							Description: "A testful description",
+						},
+					},
+				}, {
+					Path: "another/path",
+					PathItemObject: openapiPathItemObject{
+						Get: &openapiOperationObject{
+							Description: "Another testful description",
+						},
 					},
 				},
-			}, {
-				Path: "another/path",
-				PathItemObject: openapiPathItemObject{
-					Get: &openapiOperationObject{
-						Description: "Another testful description",
-					},
-				},
-			}},
+			},
 			path: "another/path",
 			expectedPathItemObject: openapiPathItemObject{
 				Get: &openapiOperationObject{
@@ -10654,10 +10811,12 @@ func TestGetPathItemObjectFunction(t *testing.T) {
 		t.Run(tc.testName, func(t *testing.T) {
 			actualPathItemObject, actualIsPathPresent := getPathItemObject(tc.paths, tc.path)
 			if isEqual := reflect.DeepEqual(actualPathItemObject, tc.expectedPathItemObject); !isEqual {
-				t.Fatalf("Got pathItemObject: %#v, want pathItemObject: %#v", actualPathItemObject, tc.expectedPathItemObject)
+				t.Fatalf("Got pathItemObject: %#v, want pathItemObject: %#v", actualPathItemObject,
+					tc.expectedPathItemObject)
 			}
 			if actualIsPathPresent != tc.expectedIsPathPresent {
-				t.Fatalf("Got isPathPresent bool: %t, want isPathPresent bool: %t", actualIsPathPresent, tc.expectedIsPathPresent)
+				t.Fatalf("Got isPathPresent bool: %t, want isPathPresent bool: %t", actualIsPathPresent,
+					tc.expectedIsPathPresent)
 			}
 		})
 	}
@@ -10673,59 +10832,67 @@ func TestUpdatePaths(t *testing.T) {
 	}{
 		{
 			testName: "Path present in openapiPathsObject, pathItemObject updated.",
-			paths: openapiPathsObject{{
-				Path: "a/path",
-				PathItemObject: openapiPathItemObject{
-					Get: &openapiOperationObject{
-						Description: "A testful description",
+			paths: openapiPathsObject{
+				{
+					Path: "a/path",
+					PathItemObject: openapiPathItemObject{
+						Get: &openapiOperationObject{
+							Description: "A testful description",
+						},
 					},
 				},
-			}},
+			},
 			pathToUpdate: "a/path",
 			newPathItemObject: openapiPathItemObject{
 				Get: &openapiOperationObject{
 					Description: "A newly updated testful description",
 				},
 			},
-			expectedUpdatedPaths: openapiPathsObject{{
-				Path: "a/path",
-				PathItemObject: openapiPathItemObject{
-					Get: &openapiOperationObject{
-						Description: "A newly updated testful description",
+			expectedUpdatedPaths: openapiPathsObject{
+				{
+					Path: "a/path",
+					PathItemObject: openapiPathItemObject{
+						Get: &openapiOperationObject{
+							Description: "A newly updated testful description",
+						},
 					},
 				},
-			}},
+			},
 		}, {
 			testName: "Path not present in openapiPathsObject, new path data appended.",
-			paths: openapiPathsObject{{
-				Path: "c/path",
-				PathItemObject: openapiPathItemObject{
-					Get: &openapiOperationObject{
-						Description: "A testful description",
+			paths: openapiPathsObject{
+				{
+					Path: "c/path",
+					PathItemObject: openapiPathItemObject{
+						Get: &openapiOperationObject{
+							Description: "A testful description",
+						},
 					},
 				},
-			}},
+			},
 			pathToUpdate: "b/path",
 			newPathItemObject: openapiPathItemObject{
 				Get: &openapiOperationObject{
 					Description: "A new testful description to add",
 				},
 			},
-			expectedUpdatedPaths: openapiPathsObject{{
-				Path: "c/path",
-				PathItemObject: openapiPathItemObject{
-					Get: &openapiOperationObject{
-						Description: "A testful description",
+			expectedUpdatedPaths: openapiPathsObject{
+				{
+					Path: "c/path",
+					PathItemObject: openapiPathItemObject{
+						Get: &openapiOperationObject{
+							Description: "A testful description",
+						},
+					},
+				}, {
+					Path: "b/path",
+					PathItemObject: openapiPathItemObject{
+						Get: &openapiOperationObject{
+							Description: "A new testful description to add",
+						},
 					},
 				},
-			}, {
-				Path: "b/path",
-				PathItemObject: openapiPathItemObject{
-					Get: &openapiOperationObject{
-						Description: "A new testful description to add",
-					},
-				},
-			}},
+			},
 		}, {
 			testName:     "No paths present in openapiPathsObject, new path data appended.",
 			paths:        openapiPathsObject{},
@@ -10735,14 +10902,16 @@ func TestUpdatePaths(t *testing.T) {
 					Description: "A new testful description to add",
 				},
 			},
-			expectedUpdatedPaths: openapiPathsObject{{
-				Path: "b/path",
-				PathItemObject: openapiPathItemObject{
-					Get: &openapiOperationObject{
-						Description: "A new testful description to add",
+			expectedUpdatedPaths: openapiPathsObject{
+				{
+					Path: "b/path",
+					PathItemObject: openapiPathItemObject{
+						Get: &openapiOperationObject{
+							Description: "A new testful description to add",
+						},
 					},
 				},
-			}},
+			},
 		},
 	}
 
@@ -10805,177 +10974,201 @@ func TestMergeTags(t *testing.T) {
 	}{
 		{
 			testName: "Simple merge.",
-			existingTags: []openapiTagObject{{
-				Name:        "tag1",
-				Description: "tag1 description",
-			}},
-			newTags: []openapiTagObject{{
-				Name:        "tag2",
-				Description: "tag2 description",
-			}},
-			expectedMergedTags: []openapiTagObject{{
-				Name:        "tag1",
-				Description: "tag1 description",
-			}, {
-				Name:        "tag2",
-				Description: "tag2 description",
-			}},
+			existingTags: []openapiTagObject{
+				{
+					Name:        "tag1",
+					Description: "tag1 description",
+				},
+			},
+			newTags: []openapiTagObject{
+				{
+					Name:        "tag2",
+					Description: "tag2 description",
+				},
+			},
+			expectedMergedTags: []openapiTagObject{
+				{
+					Name:        "tag1",
+					Description: "tag1 description",
+				}, {
+					Name:        "tag2",
+					Description: "tag2 description",
+				},
+			},
 		},
 		{
 			testName: "Merge description",
-			existingTags: []openapiTagObject{{
-				Name:        "tag1",
-				Description: "tag1 description",
-			}, {
-				Name: "tag2",
-			}, {
-				Name:        "tag3",
-				Description: "tag3 description",
-			}},
-			newTags: []openapiTagObject{{
-				Name:        "tag2",
-				Description: "tag2 description",
-			}},
-			expectedMergedTags: []openapiTagObject{{
-				Name:        "tag1",
-				Description: "tag1 description",
-			}, {
-				Name:        "tag2",
-				Description: "tag2 description",
-			}, {
-				Name:        "tag3",
-				Description: "tag3 description",
-			}},
+			existingTags: []openapiTagObject{
+				{
+					Name:        "tag1",
+					Description: "tag1 description",
+				}, {
+					Name: "tag2",
+				}, {
+					Name:        "tag3",
+					Description: "tag3 description",
+				},
+			},
+			newTags: []openapiTagObject{
+				{
+					Name:        "tag2",
+					Description: "tag2 description",
+				},
+			},
+			expectedMergedTags: []openapiTagObject{
+				{
+					Name:        "tag1",
+					Description: "tag1 description",
+				}, {
+					Name:        "tag2",
+					Description: "tag2 description",
+				}, {
+					Name:        "tag3",
+					Description: "tag3 description",
+				},
+			},
 		},
 		{
 			testName: "Merge external docs",
-			existingTags: []openapiTagObject{{
-				Name:         "tag1",
-				ExternalDocs: &openapiExternalDocumentationObject{},
-			}, {
-				Name: "tag2",
-			}, {
-				Name: "tag3",
-				ExternalDocs: &openapiExternalDocumentationObject{
-					Description: "tag3 description",
+			existingTags: []openapiTagObject{
+				{
+					Name:         "tag1",
+					ExternalDocs: &openapiExternalDocumentationObject{},
+				}, {
+					Name: "tag2",
+				}, {
+					Name: "tag3",
+					ExternalDocs: &openapiExternalDocumentationObject{
+						Description: "tag3 description",
+					},
+				}, {
+					Name: "tag4",
+					ExternalDocs: &openapiExternalDocumentationObject{
+						URL: "tag4 url",
+					},
 				},
-			}, {
-				Name: "tag4",
-				ExternalDocs: &openapiExternalDocumentationObject{
-					URL: "tag4 url",
+			},
+			newTags: []openapiTagObject{
+				{
+					Name: "tag1",
+					ExternalDocs: &openapiExternalDocumentationObject{
+						Description: "tag1 description",
+					},
+				}, {
+					Name: "tag2",
+					ExternalDocs: &openapiExternalDocumentationObject{
+						Description: "tag2 description",
+						URL:         "tag2 url",
+					},
+				}, {
+					Name: "tag3",
+					ExternalDocs: &openapiExternalDocumentationObject{
+						Description: "ignored tag3 description",
+						URL:         "tag3 url",
+					},
+				}, {
+					Name: "tag4",
+					ExternalDocs: &openapiExternalDocumentationObject{
+						Description: "tag4 description",
+					},
 				},
-			}},
-			newTags: []openapiTagObject{{
-				Name: "tag1",
-				ExternalDocs: &openapiExternalDocumentationObject{
-					Description: "tag1 description",
+			},
+			expectedMergedTags: []openapiTagObject{
+				{
+					Name: "tag1",
+					ExternalDocs: &openapiExternalDocumentationObject{
+						Description: "tag1 description",
+					},
+				}, {
+					Name: "tag2",
+					ExternalDocs: &openapiExternalDocumentationObject{
+						Description: "tag2 description",
+						URL:         "tag2 url",
+					},
+				}, {
+					Name: "tag3",
+					ExternalDocs: &openapiExternalDocumentationObject{
+						Description: "tag3 description",
+						URL:         "tag3 url",
+					},
+				}, {
+					Name: "tag4",
+					ExternalDocs: &openapiExternalDocumentationObject{
+						Description: "tag4 description",
+						URL:         "tag4 url",
+					},
 				},
-			}, {
-				Name: "tag2",
-				ExternalDocs: &openapiExternalDocumentationObject{
-					Description: "tag2 description",
-					URL:         "tag2 url",
-				},
-			}, {
-				Name: "tag3",
-				ExternalDocs: &openapiExternalDocumentationObject{
-					Description: "ignored tag3 description",
-					URL:         "tag3 url",
-				},
-			}, {
-				Name: "tag4",
-				ExternalDocs: &openapiExternalDocumentationObject{
-					Description: "tag4 description",
-				},
-			}},
-			expectedMergedTags: []openapiTagObject{{
-				Name: "tag1",
-				ExternalDocs: &openapiExternalDocumentationObject{
-					Description: "tag1 description",
-				},
-			}, {
-				Name: "tag2",
-				ExternalDocs: &openapiExternalDocumentationObject{
-					Description: "tag2 description",
-					URL:         "tag2 url",
-				},
-			}, {
-				Name: "tag3",
-				ExternalDocs: &openapiExternalDocumentationObject{
-					Description: "tag3 description",
-					URL:         "tag3 url",
-				},
-			}, {
-				Name: "tag4",
-				ExternalDocs: &openapiExternalDocumentationObject{
-					Description: "tag4 description",
-					URL:         "tag4 url",
-				},
-			}},
+			},
 		},
 		{
 			testName: "Merge extensions",
-			existingTags: []openapiTagObject{{
-				Name:       "tag1",
-				extensions: []extension{{key: "x-key1", value: MustMarshal("key1 extension")}},
-			}, {
-				Name: "tag2",
-				extensions: []extension{
-					{key: "x-key1", value: MustMarshal("key1 extension")},
-					{key: "x-key2", value: MustMarshal("key2 extension")},
+			existingTags: []openapiTagObject{
+				{
+					Name:       "tag1",
+					extensions: []extension{{key: "x-key1", value: MustMarshal("key1 extension")}},
+				}, {
+					Name: "tag2",
+					extensions: []extension{
+						{key: "x-key1", value: MustMarshal("key1 extension")},
+						{key: "x-key2", value: MustMarshal("key2 extension")},
+					},
+				}, {
+					Name: "tag3",
+					extensions: []extension{
+						{key: "x-key1", value: MustMarshal("key1 extension")},
+					},
+				}, {
+					Name:       "tag4",
+					extensions: nil,
 				},
-			}, {
-				Name: "tag3",
-				extensions: []extension{
-					{key: "x-key1", value: MustMarshal("key1 extension")},
+			},
+			newTags: []openapiTagObject{
+				{
+					Name:       "tag1",
+					extensions: []extension{{key: "x-key2", value: MustMarshal("key2 extension")}},
+				}, {
+					Name: "tag2",
+					extensions: []extension{
+						{key: "x-key1", value: MustMarshal("key1 extension")},
+						{key: "x-key2", value: MustMarshal("ignored key2 extension")},
+						{key: "x-key3", value: MustMarshal("key3 extension")},
+					},
+				}, {
+					Name:       "tag3",
+					extensions: nil,
+				}, {
+					Name: "tag4",
+					extensions: []extension{
+						{key: "x-key1", value: MustMarshal("key1 extension")},
+					},
 				},
-			}, {
-				Name:       "tag4",
-				extensions: nil,
-			}},
-			newTags: []openapiTagObject{{
-				Name:       "tag1",
-				extensions: []extension{{key: "x-key2", value: MustMarshal("key2 extension")}},
-			}, {
-				Name: "tag2",
-				extensions: []extension{
-					{key: "x-key1", value: MustMarshal("key1 extension")},
-					{key: "x-key2", value: MustMarshal("ignored key2 extension")},
-					{key: "x-key3", value: MustMarshal("key3 extension")},
+			},
+			expectedMergedTags: []openapiTagObject{
+				{
+					Name: "tag1",
+					extensions: []extension{
+						{key: "x-key1", value: MustMarshal("key1 extension")},
+						{key: "x-key2", value: MustMarshal("key2 extension")},
+					},
+				}, {
+					Name: "tag2",
+					extensions: []extension{
+						{key: "x-key1", value: MustMarshal("key1 extension")},
+						{key: "x-key2", value: MustMarshal("key2 extension")},
+						{key: "x-key3", value: MustMarshal("key3 extension")},
+					},
+				}, {
+					Name: "tag3",
+					extensions: []extension{
+						{key: "x-key1", value: MustMarshal("key1 extension")},
+					},
+				}, {
+					Name: "tag4",
+					extensions: []extension{
+						{key: "x-key1", value: MustMarshal("key1 extension")},
+					},
 				},
-			}, {
-				Name:       "tag3",
-				extensions: nil,
-			}, {
-				Name: "tag4",
-				extensions: []extension{
-					{key: "x-key1", value: MustMarshal("key1 extension")},
-				},
-			}},
-			expectedMergedTags: []openapiTagObject{{
-				Name: "tag1",
-				extensions: []extension{
-					{key: "x-key1", value: MustMarshal("key1 extension")},
-					{key: "x-key2", value: MustMarshal("key2 extension")},
-				},
-			}, {
-				Name: "tag2",
-				extensions: []extension{
-					{key: "x-key1", value: MustMarshal("key1 extension")},
-					{key: "x-key2", value: MustMarshal("key2 extension")},
-					{key: "x-key3", value: MustMarshal("key3 extension")},
-				},
-			}, {
-				Name: "tag3",
-				extensions: []extension{
-					{key: "x-key1", value: MustMarshal("key1 extension")},
-				},
-			}, {
-				Name: "tag4",
-				extensions: []extension{
-					{key: "x-key1", value: MustMarshal("key1 extension")},
-				},
-			}},
+			},
 		},
 	}
 	for _, tc := range testCases {
@@ -10983,7 +11176,8 @@ func TestMergeTags(t *testing.T) {
 		t.Run(tc.testName, func(t *testing.T) {
 			mergedTags := mergeTags(tc.existingTags, tc.newTags)
 			if !reflect.DeepEqual(tc.expectedMergedTags, mergedTags) {
-				t.Fatalf("%s: Tags not correctly merged. Want %#v, got %#v", tc.testName, tc.expectedMergedTags, mergedTags)
+				t.Fatalf("%s: Tags not correctly merged. Want %#v, got %#v", tc.testName, tc.expectedMergedTags,
+					mergedTags)
 			}
 		})
 	}
@@ -11025,7 +11219,7 @@ func TestApiVisibilityOption(t *testing.T) {
 			MessageType:    []*descriptorpb.DescriptorProto{msgdesc},
 			Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+				GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 			},
 		},
 		GoPkg: descriptor.GoPackage{
@@ -11138,7 +11332,7 @@ func TestRenderServicesOptionDeprecated(t *testing.T) {
 					MessageType:    []*descriptorpb.DescriptorProto{msgdesc},
 					Service:        []*descriptorpb.ServiceDescriptorProto{svc},
 					Options: &descriptorpb.FileOptions{
-						GoPackage: proto.String("github.com/grpc-ecosystem/grpc-gateway/runtime/internal/examplepb;example"),
+						GoPackage: proto.String("github.com/kellen-miller/grpc-gateway/runtime/internal/examplepb;example"),
 					},
 				},
 				GoPkg: descriptor.GoPackage{
@@ -11210,18 +11404,22 @@ func Test_updateSwaggerObjectFromFieldBehavior(t *testing.T) {
 	regWithNoProto3FieldSemantics := &descriptor.Registry{}
 	regWithProto3FieldSemantics := &descriptor.Registry{}
 	regWithProto3FieldSemantics.SetUseProto3FieldSemantics(true)
-	proto3Field := &descriptor.Field{FieldDescriptorProto: &descriptorpb.FieldDescriptorProto{
-		Name:   proto.String("name"),
-		Type:   descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum(),
-		Number: proto.Int32(1),
-	}}
+	proto3Field := &descriptor.Field{
+		FieldDescriptorProto: &descriptorpb.FieldDescriptorProto{
+			Name:   proto.String("name"),
+			Type:   descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum(),
+			Number: proto.Int32(1),
+		},
+	}
 	boolTrue := true
-	proto3FieldOptional := &descriptor.Field{FieldDescriptorProto: &descriptorpb.FieldDescriptorProto{
-		Name:           proto.String("name"),
-		Type:           descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum(),
-		Number:         proto.Int32(1),
-		Proto3Optional: &boolTrue,
-	}}
+	proto3FieldOptional := &descriptor.Field{
+		FieldDescriptorProto: &descriptorpb.FieldDescriptorProto{
+			Name:           proto.String("name"),
+			Type:           descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum(),
+			Number:         proto.Int32(1),
+			Proto3Optional: &boolTrue,
+		},
+	}
 	tests := []struct {
 		name     string
 		args     args

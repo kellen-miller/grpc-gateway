@@ -9,10 +9,8 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/internal/genopenapi"
-	"gopkg.in/yaml.v3"
-
+	"github.com/kellen-miller/grpc-gateway/v2/internal/descriptor"
+	"github.com/kellen-miller/grpc-gateway/v2/protoc-gen-openapiv2/internal/genopenapi"
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/descriptorpb"
@@ -23,13 +21,15 @@ func TestGenerate_YAML(t *testing.T) {
 	t.Parallel()
 
 	req := &pluginpb.CodeGeneratorRequest{
-		ProtoFile: []*descriptorpb.FileDescriptorProto{{
-			Name:    proto.String("file.proto"),
-			Package: proto.String("example"),
-			Options: &descriptorpb.FileOptions{
-				GoPackage: proto.String("goexample/v1;goexample"),
+		ProtoFile: []*descriptorpb.FileDescriptorProto{
+			{
+				Name:    proto.String("file.proto"),
+				Package: proto.String("example"),
+				Options: &descriptorpb.FileOptions{
+					GoPackage: proto.String("goexample/v1;goexample"),
+				},
 			},
-		}},
+		},
 		FileToGenerate: []string{
 			"file.proto",
 		},
@@ -132,7 +132,7 @@ func TestGenerateYAML(t *testing.T) {
 		wantYAML       string
 	}{
 		{
-			// It tests https://github.com/grpc-ecosystem/grpc-gateway/issues/3557.
+			// It tests https://github.com/kellen-miller/grpc-gateway/issues/3557.
 			name:           "path item object",
 			inputProtoText: "testdata/generator/path_item_object.prototext",
 			wantYAML:       "testdata/generator/path_item_object.swagger.yaml",
@@ -212,7 +212,7 @@ func requireGenerate(
 }
 
 func TestGeneratedYAMLIndent(t *testing.T) {
-	// It tests https://github.com/grpc-ecosystem/grpc-gateway/issues/2745.
+	// It tests https://github.com/kellen-miller/grpc-gateway/issues/2745.
 	const in = `
 	file_to_generate: "exampleproto/v1/exampleproto.proto"
 	parameter: "output_format=yaml,allow_delete_body=true"
@@ -1169,7 +1169,9 @@ func TestGenerateRPCOrderPreservedAdditionalBindings(t *testing.T) {
 			t.Log(content)
 
 			contentsSlice := strings.Fields(content)
-			expectedPaths := []string{"/b/first", "/a/additional", "/a/second", "/z/zAdditional", "/c/third", "/b/bAdditional"}
+			expectedPaths := []string{
+				"/b/first", "/a/additional", "/a/second", "/z/zAdditional", "/c/third", "/b/bAdditional",
+			}
 
 			foundPaths := []string{}
 			for _, contentValue := range contentsSlice {
@@ -1376,7 +1378,9 @@ func TestGenerateRPCOrderNotPreservedAdditionalBindings(t *testing.T) {
 			t.Log(content)
 
 			contentsSlice := strings.Fields(content)
-			expectedPaths := []string{"/b/first", "/a/additional", "/a/second", "/z/zAdditional", "/c/third", "/b/bAdditional"}
+			expectedPaths := []string{
+				"/b/first", "/a/additional", "/a/second", "/z/zAdditional", "/c/third", "/b/bAdditional",
+			}
 			sort.Strings(expectedPaths)
 
 			foundPaths := []string{}
@@ -1575,9 +1579,11 @@ func TestGenerateRPCOrderPreservedMergeFilesAdditionalBindingsMultipleServices(t
 			t.Log(content)
 
 			contentsSlice := strings.Fields(content)
-			expectedPaths := []string{"/d/first", "/e/second", "/c/third",
+			expectedPaths := []string{
+				"/d/first", "/e/second", "/c/third",
 				"/b/first", "/a/second", "/g/third", "/b/bpath", "/a/additional",
-				"/a/apath", "/z/zAdditional", "/c/cpath", "/b/bAdditional"}
+				"/a/apath", "/z/zAdditional", "/c/cpath", "/b/bAdditional",
+			}
 
 			foundPaths := []string{}
 			for _, contentValue := range contentsSlice {
@@ -1775,9 +1781,11 @@ func TestGenerateRPCOrderNotPreservedMergeFilesAdditionalBindingsMultipleService
 			t.Log(content)
 
 			contentsSlice := strings.Fields(content)
-			expectedPaths := []string{"/d/first", "/e/second", "/c/third",
+			expectedPaths := []string{
+				"/d/first", "/e/second", "/c/third",
 				"/b/first", "/a/second", "/g/third", "/b/bpath", "/a/additional",
-				"/a/apath", "/z/zAdditional", "/c/cpath", "/b/bAdditional"}
+				"/a/apath", "/z/zAdditional", "/c/cpath", "/b/bAdditional",
+			}
 			sort.Strings(expectedPaths)
 
 			foundPaths := []string{}
@@ -1850,7 +1858,8 @@ func TestFindExpectedPaths(t *testing.T) {
 			foundPaths := []string{}
 			findExpectedPaths(&foundPaths, tc.requiredPaths, tc.potentialPath)
 			if correctPathsFound := reflect.DeepEqual(foundPaths, tc.expectedPathsFound); !correctPathsFound {
-				t.Fatalf("Found paths differed from expected paths. Got: %#v, want %#v", foundPaths, tc.expectedPathsFound)
+				t.Fatalf("Found paths differed from expected paths. Got: %#v, want %#v", foundPaths,
+					tc.expectedPathsFound)
 			}
 		})
 	}

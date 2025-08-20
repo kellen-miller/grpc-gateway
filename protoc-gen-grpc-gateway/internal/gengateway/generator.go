@@ -6,8 +6,8 @@ import (
 	"go/format"
 	"path"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
-	gen "github.com/grpc-ecosystem/grpc-gateway/v2/internal/generator"
+	"github.com/kellen-miller/grpc-gateway/v2/internal/descriptor"
+	gen "github.com/kellen-miller/grpc-gateway/v2/internal/generator"
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/pluginpb"
@@ -26,16 +26,18 @@ type generator struct {
 }
 
 // New returns a new generator which generates grpc gateway files.
-func New(reg *descriptor.Registry, useRequestContext bool, registerFuncSuffix string,
-	allowPatchFeature, standalone bool, useOpaqueAPI bool) gen.Generator {
+func New(
+	reg *descriptor.Registry, useRequestContext bool, registerFuncSuffix string,
+	allowPatchFeature, standalone bool, useOpaqueAPI bool,
+) gen.Generator {
 	var imports []descriptor.GoPackage
 	for _, pkgpath := range []string{
 		"context",
 		"errors",
 		"io",
 		"net/http",
-		"github.com/grpc-ecosystem/grpc-gateway/v2/runtime",
-		"github.com/grpc-ecosystem/grpc-gateway/v2/utilities",
+		"github.com/kellen-miller/grpc-gateway/v2/runtime",
+		"github.com/kellen-miller/grpc-gateway/v2/utilities",
 		"google.golang.org/protobuf/proto",
 		"google.golang.org/grpc",
 		"google.golang.org/grpc/codes",
@@ -143,7 +145,11 @@ func (g *generator) generate(file *descriptor.File) (string, error) {
 }
 
 // addEnumPathParamImports handles adding import of enum path parameter go packages
-func (g *generator) addEnumPathParamImports(file *descriptor.File, m *descriptor.Method, pkgSeen map[string]bool) []descriptor.GoPackage {
+func (g *generator) addEnumPathParamImports(
+	file *descriptor.File,
+	m *descriptor.Method,
+	pkgSeen map[string]bool,
+) []descriptor.GoPackage {
 	var imports []descriptor.GoPackage
 	for _, b := range m.Bindings {
 		for _, p := range b.PathParams {

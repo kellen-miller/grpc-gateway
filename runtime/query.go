@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
+	"github.com/kellen-miller/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
@@ -40,7 +40,7 @@ func PopulateQueryParameters(msg proto.Message, values url.Values, filter *utili
 // DefaultQueryParser is a QueryParameterParser which implements the default
 // query parameters parsing behavior.
 //
-// See https://github.com/grpc-ecosystem/grpc-gateway/issues/2632 for more context.
+// See https://github.com/kellen-miller/grpc-gateway/issues/2632 for more context.
 type DefaultQueryParser struct{}
 
 // Parse populates "values" into "msg".
@@ -121,7 +121,8 @@ func populateFieldValueFromPath(msgValue protoreflect.Message, fieldPath []strin
 			if fieldDescriptor == nil {
 				// We're not returning an error here because this could just be
 				// an extra query parameter that isn't part of the request.
-				grpclog.Infof("field not found in %q: %q", msgValue.Descriptor().FullName(), strings.Join(fieldPath, "."))
+				grpclog.Infof("field not found in %q: %q", msgValue.Descriptor().FullName(),
+					strings.Join(fieldPath, "."))
 				return nil
 			}
 		}
@@ -157,7 +158,8 @@ func populateFieldValueFromPath(msgValue protoreflect.Message, fieldPath []strin
 	}
 
 	if len(values) > 1 {
-		return fmt.Errorf("too many values for field %q: %s", fieldDescriptor.FullName().Name(), strings.Join(values, ", "))
+		return fmt.Errorf("too many values for field %q: %s", fieldDescriptor.FullName().Name(),
+			strings.Join(values, ", "))
 	}
 
 	return populateField(fieldDescriptor, msgValue, values[0])
@@ -173,7 +175,11 @@ func populateField(fieldDescriptor protoreflect.FieldDescriptor, msgValue protor
 	return nil
 }
 
-func populateRepeatedField(fieldDescriptor protoreflect.FieldDescriptor, list protoreflect.List, values []string) error {
+func populateRepeatedField(
+	fieldDescriptor protoreflect.FieldDescriptor,
+	list protoreflect.List,
+	values []string,
+) error {
 	for _, value := range values {
 		v, err := parseField(fieldDescriptor, value)
 		if err != nil {

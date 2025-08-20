@@ -344,12 +344,12 @@ func (x SecurityScheme_Flow) Number() protoreflect.EnumNumber {
 //	    description: "";
 //	    contact: {
 //	      name: "gRPC-Gateway project";
-//	      url: "https://github.com/grpc-ecosystem/grpc-gateway";
+//	      url: "https://github.com/kellen-miller/grpc-gateway";
 //	      email: "none@example.com";
 //	    };
 //	    license: {
 //	      name: "BSD 3-Clause License";
-//	      url: "https://github.com/grpc-ecosystem/grpc-gateway/blob/main/LICENSE";
+//	      url: "https://github.com/kellen-miller/grpc-gateway/blob/main/LICENSE";
 //	    };
 //	  };
 //	  schemes: HTTPS;
@@ -1523,12 +1523,12 @@ func (b0 Response_builder) Build() *Response {
 //	    description: "";
 //	    contact: {
 //	      name: "gRPC-Gateway project";
-//	      url: "https://github.com/grpc-ecosystem/grpc-gateway";
+//	      url: "https://github.com/kellen-miller/grpc-gateway";
 //	      email: "none@example.com";
 //	    };
 //	    license: {
 //	      name: "BSD 3-Clause License";
-//	      url: "https://github.com/grpc-ecosystem/grpc-gateway/blob/main/LICENSE";
+//	      url: "https://github.com/kellen-miller/grpc-gateway/blob/main/LICENSE";
 //	    };
 //	  };
 //	  ...
@@ -1729,7 +1729,7 @@ func (b0 Info_builder) Build() *Info {
 //	    ...
 //	    contact: {
 //	      name: "gRPC-Gateway project";
-//	      url: "https://github.com/grpc-ecosystem/grpc-gateway";
+//	      url: "https://github.com/kellen-miller/grpc-gateway";
 //	      email: "none@example.com";
 //	    };
 //	    ...
@@ -1842,7 +1842,7 @@ func (b0 Contact_builder) Build() *Contact {
 //	    ...
 //	    license: {
 //	      name: "BSD 3-Clause License";
-//	      url: "https://github.com/grpc-ecosystem/grpc-gateway/blob/main/LICENSE";
+//	      url: "https://github.com/kellen-miller/grpc-gateway/blob/main/LICENSE";
 //	    };
 //	    ...
 //	  };
@@ -1934,7 +1934,7 @@ func (b0 License_builder) Build() *License {
 //	  ...
 //	  external_docs: {
 //	    description: "More about gRPC-Gateway";
-//	    url: "https://github.com/grpc-ecosystem/grpc-gateway";
+//	    url: "https://github.com/kellen-miller/grpc-gateway";
 //	  }
 //	  ...
 //	};

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/casing"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/httprule"
+	"github.com/kellen-miller/grpc-gateway/v2/internal/casing"
+	"github.com/kellen-miller/grpc-gateway/v2/internal/httprule"
 	"google.golang.org/protobuf/types/descriptorpb"
 	"google.golang.org/protobuf/types/pluginpb"
 )
@@ -293,7 +293,8 @@ func (p Parameter) ConvertFuncExpr() (string, error) {
 		conv, ok = wellKnownTypeConv[p.Target.GetTypeName()]
 	}
 	if !ok {
-		return "", fmt.Errorf("unsupported field type %s of parameter %s in %s.%s", typ, p.FieldPath, p.Method.Service.GetName(), p.Method.GetName())
+		return "", fmt.Errorf("unsupported field type %s of parameter %s in %s.%s", typ, p.FieldPath,
+			p.Method.Service.GetName(), p.Method.GetName())
 	}
 	return conv, nil
 }
@@ -430,7 +431,9 @@ func (p FieldPath) AssignableExprPrep(msgExpr string, currentPackage string) str
 				return nil, metadata, status.Errorf(codes.InvalidArgument, "expect type: *%s, but: %%t\n",%s)
 			}`
 
-			preparations = append(preparations, fmt.Sprintf(s, components, components, oneofFieldName, components, oneofFieldName, oneofFieldName, components))
+			preparations = append(preparations,
+				fmt.Sprintf(s, components, components, oneofFieldName, components, oneofFieldName, oneofFieldName,
+					components))
 			components = components + ".(*" + oneofFieldName + ")"
 		}
 

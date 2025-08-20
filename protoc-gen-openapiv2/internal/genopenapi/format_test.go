@@ -7,8 +7,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/internal/genopenapi"
-	"gopkg.in/yaml.v3"
+	"github.com/kellen-miller/grpc-gateway/v2/protoc-gen-openapiv2/internal/genopenapi"
 )
 
 func TestFormatValidate(t *testing.T) {
@@ -17,19 +16,21 @@ func TestFormatValidate(t *testing.T) {
 	testCases := [...]struct {
 		Format genopenapi.Format
 		Valid  bool
-	}{{
-		Format: genopenapi.FormatJSON,
-		Valid:  true,
-	}, {
-		Format: genopenapi.FormatYAML,
-		Valid:  true,
-	}, {
-		Format: genopenapi.Format("unknown"),
-		Valid:  false,
-	}, {
-		Format: genopenapi.Format(""),
-		Valid:  false,
-	}}
+	}{
+		{
+			Format: genopenapi.FormatJSON,
+			Valid:  true,
+		}, {
+			Format: genopenapi.FormatYAML,
+			Valid:  true,
+		}, {
+			Format: genopenapi.Format("unknown"),
+			Valid:  false,
+		}, {
+			Format: genopenapi.Format(""),
+			Valid:  false,
+		},
+	}
 
 	for _, tc := range testCases {
 		tc := tc
@@ -58,17 +59,19 @@ func TestFormatEncode(t *testing.T) {
 	testCases := [...]struct {
 		Format     genopenapi.Format
 		NewDecoder func(r io.Reader) contentDecoder
-	}{{
-		Format: genopenapi.FormatJSON,
-		NewDecoder: func(r io.Reader) contentDecoder {
-			return json.NewDecoder(r)
+	}{
+		{
+			Format: genopenapi.FormatJSON,
+			NewDecoder: func(r io.Reader) contentDecoder {
+				return json.NewDecoder(r)
+			},
+		}, {
+			Format: genopenapi.FormatYAML,
+			NewDecoder: func(r io.Reader) contentDecoder {
+				return yaml.NewDecoder(r)
+			},
 		},
-	}, {
-		Format: genopenapi.FormatYAML,
-		NewDecoder: func(r io.Reader) contentDecoder {
-			return yaml.NewDecoder(r)
-		},
-	}}
+	}
 
 	for _, tc := range testCases {
 		tc := tc

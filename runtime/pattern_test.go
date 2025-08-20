@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
+	"github.com/kellen-miller/grpc-gateway/v2/utilities"
 )
 
 const (
@@ -112,7 +112,8 @@ func TestNewPattern(t *testing.T) {
 	} {
 		pat, err := NewPattern(validVersion, spec.ops, spec.pool, spec.verb)
 		if err != nil {
-			t.Errorf("NewPattern(%d, %v, %q, %q) failed with %v; want success", validVersion, spec.ops, spec.pool, spec.verb, err)
+			t.Errorf("NewPattern(%d, %v, %q, %q) failed with %v; want success", validVersion, spec.ops, spec.pool,
+				spec.verb, err)
 			continue
 		}
 		if got, want := pat.stacksize, spec.stackSizeWant; got != want {
@@ -179,11 +180,13 @@ func TestNewPatternWithWrongOp(t *testing.T) {
 	} {
 		_, err := NewPattern(validVersion, spec.ops, spec.pool, spec.verb)
 		if err == nil {
-			t.Errorf("NewPattern(%d, %v, %q, %q) succeeded; want failure with %v", validVersion, spec.ops, spec.pool, spec.verb, ErrInvalidPattern)
+			t.Errorf("NewPattern(%d, %v, %q, %q) succeeded; want failure with %v", validVersion, spec.ops, spec.pool,
+				spec.verb, ErrInvalidPattern)
 			continue
 		}
 		if !errors.Is(err, ErrInvalidPattern) {
-			t.Errorf("NewPattern(%d, %v, %q, %q) failed with %v; want failure with %v", validVersion, spec.ops, spec.pool, spec.verb, err, ErrInvalidPattern)
+			t.Errorf("NewPattern(%d, %v, %q, %q) failed with %v; want failure with %v", validVersion, spec.ops,
+				spec.pool, spec.verb, err, ErrInvalidPattern)
 			continue
 		}
 	}
@@ -205,11 +208,13 @@ func TestNewPatternWithStackUnderflow(t *testing.T) {
 	} {
 		_, err := NewPattern(validVersion, spec.ops, spec.pool, spec.verb)
 		if err == nil {
-			t.Errorf("NewPattern(%d, %v, %q, %q) succeeded; want failure with %v", validVersion, spec.ops, spec.pool, spec.verb, ErrInvalidPattern)
+			t.Errorf("NewPattern(%d, %v, %q, %q) succeeded; want failure with %v", validVersion, spec.ops, spec.pool,
+				spec.verb, ErrInvalidPattern)
 			continue
 		}
 		if !errors.Is(err, ErrInvalidPattern) {
-			t.Errorf("NewPattern(%d, %v, %q, %q) failed with %v; want failure with %v", validVersion, spec.ops, spec.pool, spec.verb, err, ErrInvalidPattern)
+			t.Errorf("NewPattern(%d, %v, %q, %q) failed with %v; want failure with %v", validVersion, spec.ops,
+				spec.pool, spec.verb, err, ErrInvalidPattern)
 			continue
 		}
 	}
@@ -338,25 +343,29 @@ func TestMatch(t *testing.T) {
 	} {
 		pat, err := NewPattern(validVersion, spec.ops, spec.pool, spec.verb)
 		if err != nil {
-			t.Errorf("NewPattern(%d, %v, %q, %q) failed with %v; want success", validVersion, spec.ops, spec.pool, spec.verb, err)
+			t.Errorf("NewPattern(%d, %v, %q, %q) failed with %v; want success", validVersion, spec.ops, spec.pool,
+				spec.verb, err)
 			continue
 		}
 
 		for _, path := range spec.match {
 			_, err = pat.Match(segments(path))
 			if err != nil {
-				t.Errorf("pat.Match(%q) failed with %v; want success; pattern = (%v, %q)", path, err, spec.ops, spec.pool)
+				t.Errorf("pat.Match(%q) failed with %v; want success; pattern = (%v, %q)", path, err, spec.ops,
+					spec.pool)
 			}
 		}
 
 		for _, path := range spec.notMatch {
 			_, err = pat.Match(segments(path))
 			if err == nil {
-				t.Errorf("pat.Match(%q) succeeded; want failure with %v; pattern = (%v, %q)", path, ErrNotMatch, spec.ops, spec.pool)
+				t.Errorf("pat.Match(%q) succeeded; want failure with %v; pattern = (%v, %q)", path, ErrNotMatch,
+					spec.ops, spec.pool)
 				continue
 			}
 			if !errors.Is(err, ErrNotMatch) {
-				t.Errorf("pat.Match(%q) failed with %v; want failure with %v; pattern = (%v, %q)", spec.notMatch, err, ErrNotMatch, spec.ops, spec.pool)
+				t.Errorf("pat.Match(%q) failed with %v; want failure with %v; pattern = (%v, %q)", spec.notMatch, err,
+					ErrNotMatch, spec.ops, spec.pool)
 			}
 		}
 	}
@@ -525,14 +534,16 @@ func TestMatchWithBinding(t *testing.T) {
 	} {
 		pat, err := NewPattern(validVersion, spec.ops, spec.pool, spec.verb)
 		if err != nil {
-			t.Errorf("NewPattern(%d, %v, %q, %q) failed with %v; want success", validVersion, spec.ops, spec.pool, spec.verb, err)
+			t.Errorf("NewPattern(%d, %v, %q, %q) failed with %v; want success", validVersion, spec.ops, spec.pool,
+				spec.verb, err)
 			continue
 		}
 
 		components, verb := segments(spec.path)
 		got, err := pat.MatchAndEscape(components, verb, spec.mode)
 		if err != nil {
-			t.Errorf("pat.Match(%q) failed with %v; want success; pattern = (%v, %q)", spec.path, err, spec.ops, spec.pool)
+			t.Errorf("pat.Match(%q) failed with %v; want success; pattern = (%v, %q)", spec.path, err, spec.ops,
+				spec.pool)
 		}
 		if !reflect.DeepEqual(got, spec.want) {
 			t.Errorf("pat.Match(%q) = %q; want %q; pattern = (%v, %q)", spec.path, got, spec.want, spec.ops, spec.pool)
@@ -616,7 +627,8 @@ func TestPatternString(t *testing.T) {
 	} {
 		p, err := NewPattern(validVersion, spec.ops, spec.pool, "")
 		if err != nil {
-			t.Errorf("NewPattern(%d, %v, %q, %q) failed with %v; want success", validVersion, spec.ops, spec.pool, "", err)
+			t.Errorf("NewPattern(%d, %v, %q, %q) failed with %v; want success", validVersion, spec.ops, spec.pool, "",
+				err)
 			continue
 		}
 		if got, want := p.String(), spec.want; got != want {
@@ -626,7 +638,8 @@ func TestPatternString(t *testing.T) {
 		verb := "LOCK"
 		p, err = NewPattern(validVersion, spec.ops, spec.pool, verb)
 		if err != nil {
-			t.Errorf("NewPattern(%d, %v, %q, %q) failed with %v; want success", validVersion, spec.ops, spec.pool, verb, err)
+			t.Errorf("NewPattern(%d, %v, %q, %q) failed with %v; want success", validVersion, spec.ops, spec.pool, verb,
+				err)
 			continue
 		}
 		if got, want := p.String(), fmt.Sprintf("%s:%s", spec.want, verb); got != want {

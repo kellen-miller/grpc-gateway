@@ -6,9 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor/apiconfig"
+	"github.com/kellen-miller/grpc-gateway/v2/internal/descriptor/apiconfig"
 	"google.golang.org/protobuf/encoding/protojson"
-	"gopkg.in/yaml.v3"
 )
 
 func loadGrpcAPIServiceFromYAML(yamlFileContents []byte, yamlSourceLogName string) (*apiconfig.GrpcAPIService, error) {
@@ -35,7 +34,11 @@ func loadGrpcAPIServiceFromYAML(yamlFileContents []byte, yamlSourceLogName strin
 	return &serviceConfiguration, nil
 }
 
-func registerHTTPRulesFromGrpcAPIService(registry *Registry, service *apiconfig.GrpcAPIService, sourceLogName string) error {
+func registerHTTPRulesFromGrpcAPIService(
+	registry *Registry,
+	service *apiconfig.GrpcAPIService,
+	sourceLogName string,
+) error {
 	if service.Http == nil {
 		// Nothing to do
 		return nil
@@ -44,7 +47,8 @@ func registerHTTPRulesFromGrpcAPIService(registry *Registry, service *apiconfig.
 	for _, rule := range service.Http.GetRules() {
 		selector := "." + strings.Trim(rule.GetSelector(), " ")
 		if strings.ContainsAny(selector, "*, ") {
-			return fmt.Errorf("selector %q in %v must specify a single service method without wildcards", rule.GetSelector(), sourceLogName)
+			return fmt.Errorf("selector %q in %v must specify a single service method without wildcards",
+				rule.GetSelector(), sourceLogName)
 		}
 
 		registry.AddExternalHTTPRule(selector, rule)

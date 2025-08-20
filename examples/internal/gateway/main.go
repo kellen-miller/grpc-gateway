@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	gwruntime "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	gwruntime "github.com/kellen-miller/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc/grpclog"
 )
 
@@ -58,7 +58,7 @@ func Run(ctx context.Context, opts Options) error {
 
 	// Do not use logRequestBody for ExcessBodyServer because it will perform
 	// io.ReadAll and mask the issue:
-	// https://github.com/grpc-ecosystem/grpc-gateway/issues/5236
+	// https://github.com/kellen-miller/grpc-gateway/issues/5236
 	hmux := http.NewServeMux()
 	hmux.Handle("/rpc/excess-body/", allowCORS(mux))
 	hmux.Handle("/", logRequestBody(allowCORS(mux)))

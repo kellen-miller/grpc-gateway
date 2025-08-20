@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	examples "github.com/grpc-ecosystem/grpc-gateway/v2/examples/internal/proto/examplepb"
+	examples "github.com/kellen-miller/grpc-gateway/v2/examples/internal/proto/examplepb"
 )
 
 // Implements of ResponseBodyServiceServer
@@ -15,7 +15,10 @@ func newResponseBodyServer() examples.ResponseBodyServiceServer {
 	return new(responseBodyServer)
 }
 
-func (s *responseBodyServer) GetResponseBody(ctx context.Context, req *examples.ResponseBodyIn) (*examples.ResponseBodyOut, error) {
+func (s *responseBodyServer) GetResponseBody(
+	ctx context.Context,
+	req *examples.ResponseBodyIn,
+) (*examples.ResponseBodyOut, error) {
 	return &examples.ResponseBodyOut{
 		Response: &examples.ResponseBodyOut_Response{
 			Data: req.Data,
@@ -23,7 +26,10 @@ func (s *responseBodyServer) GetResponseBody(ctx context.Context, req *examples.
 	}, nil
 }
 
-func (s *responseBodyServer) ListResponseBodies(ctx context.Context, req *examples.ResponseBodyIn) (*examples.RepeatedResponseBodyOut, error) {
+func (s *responseBodyServer) ListResponseBodies(
+	ctx context.Context,
+	req *examples.ResponseBodyIn,
+) (*examples.RepeatedResponseBodyOut, error) {
 	return &examples.RepeatedResponseBodyOut{
 		Response: []*examples.RepeatedResponseBodyOut_Response{
 			{
@@ -33,7 +39,10 @@ func (s *responseBodyServer) ListResponseBodies(ctx context.Context, req *exampl
 	}, nil
 }
 
-func (s *responseBodyServer) ListResponseStrings(ctx context.Context, req *examples.ResponseBodyIn) (*examples.RepeatedResponseStrings, error) {
+func (s *responseBodyServer) ListResponseStrings(
+	ctx context.Context,
+	req *examples.ResponseBodyIn,
+) (*examples.RepeatedResponseStrings, error) {
 	if req.Data == "empty" {
 		return &examples.RepeatedResponseStrings{
 			Values: []string{},
@@ -44,7 +53,10 @@ func (s *responseBodyServer) ListResponseStrings(ctx context.Context, req *examp
 	}, nil
 }
 
-func (s *responseBodyServer) GetResponseBodyStream(req *examples.ResponseBodyIn, stream examples.ResponseBodyService_GetResponseBodyStreamServer) error {
+func (s *responseBodyServer) GetResponseBodyStream(
+	req *examples.ResponseBodyIn,
+	stream examples.ResponseBodyService_GetResponseBodyStreamServer,
+) error {
 	if err := stream.Send(&examples.ResponseBodyOut{
 		Response: &examples.ResponseBodyOut_Response{
 			Data: fmt.Sprintf("first %s", req.Data),
@@ -60,7 +72,10 @@ func (s *responseBodyServer) GetResponseBodyStream(req *examples.ResponseBodyIn,
 	})
 }
 
-func (s *responseBodyServer) GetResponseBodySameName(ctx context.Context, req *examples.ResponseBodyIn) (*examples.ResponseBodyValue, error) {
+func (s *responseBodyServer) GetResponseBodySameName(
+	ctx context.Context,
+	req *examples.ResponseBodyIn,
+) (*examples.ResponseBodyValue, error) {
 	return &examples.ResponseBodyValue{
 		ResponseBodyValue: req.Data,
 	}, nil

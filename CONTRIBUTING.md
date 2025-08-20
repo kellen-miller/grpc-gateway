@@ -54,7 +54,7 @@ To make a release, follow these steps:
    recommend whether the new release should be a patch or minor release.
 1. Tag the release on `main`.
    1. The release can be created using the command line, or also through GitHub's [releases
-      UI](https://github.com/grpc-ecosystem/grpc-gateway/releases/new).
+      UI](https://github.com/kellen-miller/grpc-gateway/releases/new).
    1. If you create a release using the web UI you can publish it as a draft and have it
       reviewed by another maintainer.
    1. Update the release description. Try to include some of the highlights of this release,

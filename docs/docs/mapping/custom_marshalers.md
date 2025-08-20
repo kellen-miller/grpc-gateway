@@ -7,7 +7,7 @@ parent: Mapping
 
 # Custom marshalers
 
-[`Marshaler`](https://pkg.go.dev/github.com/grpc-ecosystem/grpc-gateway/runtime?tab=doc#Marshaler)
+[`Marshaler`](https://pkg.go.dev/github.com/kellen-miller/grpc-gateway/runtime?tab=doc#Marshaler)
 implementations can implement optional additional methods to customize their
 behaviour beyond the methods required by the core interface.
 
@@ -16,7 +16,7 @@ behaviour beyond the methods required by the core interface.
 By default, a streamed response delimits each response body with a single
 newline (`"\n"`). You can change this delimiter by having your marshaler
 implement
-[`Delimited`](https://pkg.go.dev/github.com/grpc-ecosystem/grpc-gateway/runtime#Delimited).
+[`Delimited`](https://pkg.go.dev/github.com/kellen-miller/grpc-gateway/runtime#Delimited).
 
 For example, to separate each entry with a pipe (`"|"`) instead:
 
@@ -36,21 +36,21 @@ func (*YourMarshaler) Delimiter() []byte {
 
 By default, a streamed response emits a `Content-Type` header that is the same
 for a unary response, from the `ContentType()` method of the
-[`Marshaler`](https://pkg.go.dev/github.com/grpc-ecosystem/grpc-gateway/runtime?tab=doc#Marshaler)
+[`Marshaler`](https://pkg.go.dev/github.com/kellen-miller/grpc-gateway/runtime?tab=doc#Marshaler)
 interface.
 
 If you require the server to declare a distinct content type for stream
 responses versus unary responses, the marshaler must implement
-[`StreamContentType`](https://pkg.go.dev/github.com/grpc-ecosystem/grpc-gateway/runtime#StreamContentType).
+[`StreamContentType`](https://pkg.go.dev/github.com/kellen-miller/grpc-gateway/runtime#StreamContentType).
 This provides the MIME type when specifically responding to a streaming
 response.
 
 For example, by default the
-[`JSONPb`](https://pkg.go.dev/github.com/grpc-ecosystem/grpc-gateway/runtime#JSONPb)
+[`JSONPb`](https://pkg.go.dev/github.com/kellen-miller/grpc-gateway/runtime#JSONPb)
 marshaler results in `application/json` for its `Content-Type` response header,
 irrespective of unary versus streaming. This can be changed for streaming
 endpoints by wrapping the marshaler with a custom marshaler that implements
-[`StreamContentType`](https://pkg.go.dev/github.com/grpc-ecosystem/grpc-gateway/runtime#StreamContentType)
+[`StreamContentType`](https://pkg.go.dev/github.com/kellen-miller/grpc-gateway/runtime#StreamContentType)
 to return the [NDJSON](https://github.com/ndjson/ndjson-spec) MIME type for
 streaming response endpoints:
 

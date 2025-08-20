@@ -5,12 +5,12 @@
     "version": "1.0",
     "contact": {
       "name": "gRPC-Gateway project",
-      "url": "https://github.com/grpc-ecosystem/grpc-gateway",
+        "url": "https://github.com/kellen-miller/grpc-gateway",
       "email": "none@example.com"
     },
     "license": {
       "name": "BSD 3-Clause License",
-      "url": "https://github.com/grpc-ecosystem/grpc-gateway/blob/main/LICENSE"
+        "url": "https://github.com/kellen-miller/grpc-gateway/blob/main/LICENSE"
     },
     "x-something-something": "yadda"
   },
@@ -25,7 +25,7 @@
       "description": "ABitOfEverythingService description -- which should not be used in place of the documentation comment!",
       "externalDocs": {
         "description": "Find out more about EchoService",
-        "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+          "url": "https://github.com/kellen-miller/grpc-gateway"
       }
     },
     {
@@ -173,7 +173,7 @@
         ],
         "externalDocs": {
           "description": "Find out more Echo",
-          "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+            "url": "https://github.com/kellen-miller/grpc-gateway"
         }
       }
     },
@@ -2005,7 +2005,7 @@
         "security": [],
         "externalDocs": {
           "description": "Find out more about GetQuery",
-          "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+            "url": "https://github.com/kellen-miller/grpc-gateway"
         }
       }
     },
@@ -5461,7 +5461,7 @@
               "title": "A bit of everything",
               "externalDocs": {
                 "description": "Find out more about ABitOfEverything",
-                "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+                  "url": "https://github.com/kellen-miller/grpc-gateway"
               },
               "required": [
                 "int64Value",
@@ -5786,7 +5786,7 @@
               "title": "A bit of everything",
               "externalDocs": {
                 "description": "Find out more about ABitOfEverything",
-                "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+                  "url": "https://github.com/kellen-miller/grpc-gateway"
               },
               "required": [
                 "int64Value",
@@ -5872,7 +5872,7 @@
         ],
         "externalDocs": {
           "description": "Find out more Echo",
-          "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+            "url": "https://github.com/kellen-miller/grpc-gateway"
         }
       },
       "post": {
@@ -5941,7 +5941,7 @@
         ],
         "externalDocs": {
           "description": "Find out more Echo",
-          "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+            "url": "https://github.com/kellen-miller/grpc-gateway"
         }
       }
     },
@@ -6782,7 +6782,7 @@
       "title": "A bit of everything",
       "externalDocs": {
         "description": "Find out more about ABitOfEverything",
-        "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+          "url": "https://github.com/kellen-miller/grpc-gateway"
       },
       "required": [
         "uuid",
@@ -7047,7 +7047,7 @@
           "title": "A bit of everything",
           "externalDocs": {
             "description": "Find out more about ABitOfEverything",
-            "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+              "url": "https://github.com/kellen-miller/grpc-gateway"
           },
           "x-a-bit-of-everything-foo": "bar"
         },
@@ -7336,7 +7336,7 @@
       "title": "A bit of everything",
       "externalDocs": {
         "description": "Find out more about ABitOfEverything",
-        "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+          "url": "https://github.com/kellen-miller/grpc-gateway"
       },
       "required": [
         "uuid",
@@ -7724,7 +7724,7 @@
       "title": "A bit of everything",
       "externalDocs": {
         "description": "Find out more about ABitOfEverything",
-        "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+          "url": "https://github.com/kellen-miller/grpc-gateway"
       },
       "required": [
         "int64Value",
@@ -7832,7 +7832,7 @@
       "title": "NumericEnum",
       "externalDocs": {
         "description": "Find out more about ABitOfEverything",
-        "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+          "url": "https://github.com/kellen-miller/grpc-gateway"
       },
       "x-a-bit-of-everything-foo": "bar"
     },
@@ -7846,7 +7846,7 @@
           "$ref": "#/definitions/protoexamplepbFoo"
         }
       },
-      "title": "Required message type -\u003e OpenAPI\nhttps://github.com/grpc-ecosystem/grpc-gateway/issues/2837",
+        "title": "Required message type -\u003e OpenAPI\nhttps://github.com/kellen-miller/grpc-gateway/issues/2837",
       "required": [
         "id",
         "foo"
@@ -7996,7 +7996,7 @@
   ],
   "externalDocs": {
     "description": "More about gRPC-Gateway",
-    "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+      "url": "https://github.com/kellen-miller/grpc-gateway"
   },
   "x-grpc-gateway-baz-list": [
     "one",

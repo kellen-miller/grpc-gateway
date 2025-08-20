@@ -33,5 +33,5 @@ definitions:
         type: string
     x-go-type:
       import:
-        package: "github.com/grpc-ecosystem/grpc-gateway/v2/test/service/v1"
+        package: "github.com/kellen-miller/grpc-gateway/v2/test/service/v1"
       type: "TestMessage"

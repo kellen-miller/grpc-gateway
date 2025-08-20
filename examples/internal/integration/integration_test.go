@@ -18,18 +18,18 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/examples/internal/proto/examplepb"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/examples/internal/proto/pathenum"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/examples/internal/proto/sub"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/examples/internal/server"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/kellen-miller/grpc-gateway/v2/examples/internal/proto/examplepb"
+	"github.com/kellen-miller/grpc-gateway/v2/examples/internal/proto/pathenum"
+	"github.com/kellen-miller/grpc-gateway/v2/examples/internal/proto/sub"
+	"github.com/kellen-miller/grpc-gateway/v2/examples/internal/server"
+	"github.com/kellen-miller/grpc-gateway/v2/runtime"
 	statuspb "google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/testing/protocmp"
 	"google.golang.org/protobuf/types/known/emptypb"
-	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"google.golang.org/protobuf/types/known/structpb"
 )
 
@@ -52,7 +52,7 @@ func TestEcho(t *testing.T) {
 			testEchoNestedOverride(t, 8088)
 			testEchoBody(t, 8088, apiPrefix, true)
 			testEchoBody(t, 8088, apiPrefix, false)
-			// Use SendHeader/SetTrailer without gRPC server https://github.com/grpc-ecosystem/grpc-gateway/issues/517#issuecomment-684625645
+			// Use SendHeader/SetTrailer without gRPC server https://github.com/kellen-miller/grpc-gateway/issues/517#issuecomment-684625645
 			testEchoBody(t, 8089, apiPrefix, true)
 			testEchoBody(t, 8089, apiPrefix, false)
 			testEchoWithNonASCIIHeaderValues(t, 8088, apiPrefix)
@@ -100,18 +100,28 @@ func TestEchoPatch(t *testing.T) {
 	}
 
 	sent := &examplepb.DynamicMessage{
-		StructField: &structpb.Struct{Fields: map[string]*structpb.Value{
-			"struct_key": {Kind: &structpb.Value_StructValue{
-				StructValue: &structpb.Struct{Fields: map[string]*structpb.Value{
-					"layered_struct_key": {Kind: &structpb.Value_StringValue{StringValue: "struct_val"}},
-				}},
-			}},
-		}},
-		ValueField: &structpb.Value{Kind: &structpb.Value_StructValue{
-			StructValue: &structpb.Struct{Fields: map[string]*structpb.Value{
-				"value_struct_key": {Kind: &structpb.Value_StringValue{StringValue: "value_struct_val"}},
-			}},
-		}},
+		StructField: &structpb.Struct{
+			Fields: map[string]*structpb.Value{
+				"struct_key": {
+					Kind: &structpb.Value_StructValue{
+						StructValue: &structpb.Struct{
+							Fields: map[string]*structpb.Value{
+								"layered_struct_key": {Kind: &structpb.Value_StringValue{StringValue: "struct_val"}},
+							},
+						},
+					},
+				},
+			},
+		},
+		ValueField: &structpb.Value{
+			Kind: &structpb.Value_StructValue{
+				StructValue: &structpb.Struct{
+					Fields: map[string]*structpb.Value{
+						"value_struct_key": {Kind: &structpb.Value_StringValue{StringValue: "value_struct_val"}},
+					},
+				},
+			},
+		},
 	}
 	payload, err := protojson.MarshalOptions{UseProtoNames: true}.Marshal(sent)
 	if err != nil {
@@ -149,9 +159,11 @@ func TestEchoPatch(t *testing.T) {
 	if diff := cmp.Diff(received.Body, sent, protocmp.Transform()); diff != "" {
 		t.Error(diff)
 	}
-	if diff := cmp.Diff(received.UpdateMask, fieldmaskpb.FieldMask{Paths: []string{
-		"struct_field.struct_key.layered_struct_key", "value_field.value_struct_key",
-	}}, protocmp.Transform(), protocmp.SortRepeatedFields(received.UpdateMask, "paths")); diff != "" {
+	if diff := cmp.Diff(received.UpdateMask, fieldmaskpb.FieldMask{
+		Paths: []string{
+			"struct_field.struct_key.layered_struct_key", "value_field.value_struct_key",
+		},
+	}, protocmp.Transform(), protocmp.SortRepeatedFields(received.UpdateMask, "paths")); diff != "" {
 		t.Error(diff)
 	}
 }
@@ -354,7 +366,8 @@ func testEchoOneof2(t *testing.T, port int, apiPrefix string, contentType string
 }
 
 func testEchoPathParamOverwrite(t *testing.T, port int) {
-	apiURL := fmt.Sprintf("http://localhost:%d/v1/example/echo/resource/my_resource_id?resourceId=bad_resource_id", port)
+	apiURL := fmt.Sprintf("http://localhost:%d/v1/example/echo/resource/my_resource_id?resourceId=bad_resource_id",
+		port)
 	resp, err := http.Get(apiURL)
 	if err != nil {
 		t.Errorf("http.Get(%q) failed with %v; want success", apiURL, err)
@@ -552,7 +565,11 @@ func testABECreate(t *testing.T, port int) {
 		NestedPathEnumValue:      pathenum.MessagePathEnum_JKL,
 		EnumValueAnnotation:      examplepb.NumericEnum_ONE,
 	}
-	apiURL := fmt.Sprintf("http://localhost:%d/v1/example/a_bit_of_everything/%f/%f/%d/separator/%d/%d/%d/%d/%v/%s/%d/%d/%d/%d/%d/%s/%s/%s/%s/%s", port, want.FloatValue, want.DoubleValue, want.Int64Value, want.Uint64Value, want.Int32Value, want.Fixed64Value, want.Fixed32Value, want.BoolValue, want.StringValue, want.Uint32Value, want.Sfixed32Value, want.Sfixed64Value, want.Sint32Value, want.Sint64Value, want.NonConventionalNameValue, want.EnumValue, want.PathEnumValue, want.NestedPathEnumValue, want.EnumValueAnnotation)
+	apiURL := fmt.Sprintf("http://localhost:%d/v1/example/a_bit_of_everything/%f/%f/%d/separator/%d/%d/%d/%d/%v/%s/%d/%d/%d/%d/%d/%s/%s/%s/%s/%s",
+		port, want.FloatValue, want.DoubleValue, want.Int64Value, want.Uint64Value, want.Int32Value, want.Fixed64Value,
+		want.Fixed32Value, want.BoolValue, want.StringValue, want.Uint32Value, want.Sfixed32Value, want.Sfixed64Value,
+		want.Sint32Value, want.Sint64Value, want.NonConventionalNameValue, want.EnumValue, want.PathEnumValue,
+		want.NestedPathEnumValue, want.EnumValueAnnotation)
 
 	resp, err := http.Post(apiURL, "application/json", strings.NewReader("{}"))
 	if err != nil {
@@ -1464,7 +1481,8 @@ func testAdditionalBindings(t *testing.T, port int) {
 			apiURL := fmt.Sprintf("http://localhost:%d/v2/example/echo", port)
 			resp, err := http.Post(apiURL, "application/json", strings.NewReader(`"hello"`))
 			if err != nil {
-				t.Errorf("http.Post(%q, %q, %q) failed with %v; want success", apiURL, "application/json", `"hello"`, err)
+				t.Errorf("http.Post(%q, %q, %q) failed with %v; want success", apiURL, "application/json", `"hello"`,
+					err)
 				return nil
 			}
 			return resp
@@ -1478,7 +1496,8 @@ func testAdditionalBindings(t *testing.T, port int) {
 			apiURL := fmt.Sprintf("http://localhost:%d/v2/example/echo", port)
 			resp, err := http.Post(apiURL, "application/json", r)
 			if err != nil {
-				t.Errorf("http.Post(%q, %q, %q) failed with %v; want success", apiURL, "application/json", `"hello"`, err)
+				t.Errorf("http.Post(%q, %q, %q) failed with %v; want success", apiURL, "application/json", `"hello"`,
+					err)
 				return nil
 			}
 			return resp
@@ -1610,7 +1629,15 @@ func testABERepeated(t *testing.T, port int) {
 			-4611686018427387904,
 		},
 	}
-	apiURL := fmt.Sprintf("http://localhost:%d/v1/example/a_bit_of_everything_repeated/%s/%s/%s/%s/%s/%s/%s/%s/%s/%s/%s/%s/%s/%s/%s/%s", port, f(reflect.ValueOf(want.PathRepeatedFloatValue)), f(reflect.ValueOf(want.PathRepeatedDoubleValue)), f(reflect.ValueOf(want.PathRepeatedInt64Value)), f(reflect.ValueOf(want.PathRepeatedUint64Value)), f(reflect.ValueOf(want.PathRepeatedInt32Value)), f(reflect.ValueOf(want.PathRepeatedFixed64Value)), f(reflect.ValueOf(want.PathRepeatedFixed32Value)), f(reflect.ValueOf(want.PathRepeatedBoolValue)), f(reflect.ValueOf(want.PathRepeatedStringValue)), f(reflect.ValueOf(want.PathRepeatedBytesValue)), f(reflect.ValueOf(want.PathRepeatedUint32Value)), f(reflect.ValueOf(want.PathRepeatedEnumValue)), f(reflect.ValueOf(want.PathRepeatedSfixed32Value)), f(reflect.ValueOf(want.PathRepeatedSfixed64Value)), f(reflect.ValueOf(want.PathRepeatedSint32Value)), f(reflect.ValueOf(want.PathRepeatedSint64Value)))
+	apiURL := fmt.Sprintf("http://localhost:%d/v1/example/a_bit_of_everything_repeated/%s/%s/%s/%s/%s/%s/%s/%s/%s/%s/%s/%s/%s/%s/%s/%s",
+		port, f(reflect.ValueOf(want.PathRepeatedFloatValue)), f(reflect.ValueOf(want.PathRepeatedDoubleValue)),
+		f(reflect.ValueOf(want.PathRepeatedInt64Value)), f(reflect.ValueOf(want.PathRepeatedUint64Value)),
+		f(reflect.ValueOf(want.PathRepeatedInt32Value)), f(reflect.ValueOf(want.PathRepeatedFixed64Value)),
+		f(reflect.ValueOf(want.PathRepeatedFixed32Value)), f(reflect.ValueOf(want.PathRepeatedBoolValue)),
+		f(reflect.ValueOf(want.PathRepeatedStringValue)), f(reflect.ValueOf(want.PathRepeatedBytesValue)),
+		f(reflect.ValueOf(want.PathRepeatedUint32Value)), f(reflect.ValueOf(want.PathRepeatedEnumValue)),
+		f(reflect.ValueOf(want.PathRepeatedSfixed32Value)), f(reflect.ValueOf(want.PathRepeatedSfixed64Value)),
+		f(reflect.ValueOf(want.PathRepeatedSint32Value)), f(reflect.ValueOf(want.PathRepeatedSint64Value)))
 
 	resp, err := http.Get(apiURL)
 	if err != nil {
@@ -1857,7 +1884,8 @@ func TestResponseBodyStream(t *testing.T) {
 		t.Errorf("resp.StatusCode = %d; want %d", got, want)
 	}
 
-	if diff := cmp.Diff(body, []string{`{"result":{"data":"first foo"}}`, `{"result":{"data":"second foo"}}`}); diff != "" {
+	if diff := cmp.Diff(body,
+		[]string{`{"result":{"data":"first foo"}}`, `{"result":{"data":"second foo"}}`}); diff != "" {
 		t.Error(diff)
 	}
 }
@@ -1901,7 +1929,8 @@ func TestResponseBodyStreamHttpBodyError(t *testing.T) {
 		t.Errorf("resp.StatusCode = %d; want %d", got, want)
 	}
 
-	if diff := cmp.Diff(body, []string{"Hello 1", "Hello 2", `{"error":{"code":3,"message":"error","details":[]}}`}); diff != "" {
+	if diff := cmp.Diff(body,
+		[]string{"Hello 1", "Hello 2", `{"error":{"code":3,"message":"error","details":[]}}`}); diff != "" {
 		t.Error(diff)
 	}
 }
@@ -2111,7 +2140,8 @@ func testRequestQueryParams(t *testing.T, port int) {
 			name:        "get url query values",
 			httpMethod:  "GET",
 			contentType: "application/json",
-			apiURL:      fmt.Sprintf("http://localhost:%d/v1/example/a_bit_of_everything/params/get/foo?double_value=%v&bool_value=%v&%v", port, 1234.56, true, mappedStringValueStr),
+			apiURL: fmt.Sprintf("http://localhost:%d/v1/example/a_bit_of_everything/params/get/foo?double_value=%v&bool_value=%v&%v",
+				port, 1234.56, true, mappedStringValueStr),
 			wantContent: &examplepb.ABitOfEverything{
 				SingleNested: &examplepb.ABitOfEverything_Nested{
 					Name: "foo",
@@ -2139,7 +2169,8 @@ func testRequestQueryParams(t *testing.T, port int) {
 			name:        "post url query values",
 			httpMethod:  "POST",
 			contentType: "application/json",
-			apiURL:      fmt.Sprintf("http://localhost:%d/v1/example/a_bit_of_everything/params/post/hello-world?double_value=%v&bool_value=%v", port, 1234.56, true),
+			apiURL: fmt.Sprintf("http://localhost:%d/v1/example/a_bit_of_everything/params/post/hello-world?double_value=%v&bool_value=%v",
+				port, 1234.56, true),
 			wantContent: &examplepb.ABitOfEverything{
 				SingleNested: &examplepb.ABitOfEverything_Nested{
 					Name:   "foo",
@@ -2155,7 +2186,8 @@ func testRequestQueryParams(t *testing.T, port int) {
 			name:        "post form and url query values",
 			httpMethod:  "POST",
 			contentType: "application/x-www-form-urlencoded",
-			apiURL:      fmt.Sprintf("http://localhost:%d/v1/example/a_bit_of_everything/params/get/foo?double_value=%v&bool_value=%v", port, 1234.56, true),
+			apiURL: fmt.Sprintf("http://localhost:%d/v1/example/a_bit_of_everything/params/get/foo?double_value=%v&bool_value=%v",
+				port, 1234.56, true),
 			wantContent: &examplepb.ABitOfEverything{
 				SingleNested: &examplepb.ABitOfEverything_Nested{
 					Name: "foo",

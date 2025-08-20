@@ -8,9 +8,9 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/casing"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
+	"github.com/kellen-miller/grpc-gateway/v2/internal/casing"
+	"github.com/kellen-miller/grpc-gateway/v2/internal/descriptor"
+	"github.com/kellen-miller/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc/grpclog"
 )
 
@@ -142,7 +142,8 @@ func (f queryParamFilter) String() string {
 		encodings[enc] = fmt.Sprintf("%q: %d", str, enc)
 	}
 	e := strings.Join(encodings, ", ")
-	return fmt.Sprintf("&utilities.DoubleArray{Encoding: map[string]int{%s}, Base: %#v, Check: %#v}", e, f.Base, f.Check)
+	return fmt.Sprintf("&utilities.DoubleArray{Encoding: map[string]int{%s}, Base: %#v, Check: %#v}", e, f.Base,
+		f.Check)
 }
 
 type trailerParams struct {

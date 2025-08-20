@@ -4,7 +4,7 @@ import (
 	"context"
 	"io"
 
-	examples "github.com/grpc-ecosystem/grpc-gateway/v2/examples/internal/proto/examplepb"
+	examples "github.com/kellen-miller/grpc-gateway/v2/examples/internal/proto/examplepb"
 )
 
 type flowCombinationServer struct{}
@@ -13,11 +13,17 @@ func newFlowCombinationServer() examples.FlowCombinationServer {
 	return &flowCombinationServer{}
 }
 
-func (s flowCombinationServer) RpcEmptyRpc(ctx context.Context, req *examples.EmptyProto) (*examples.EmptyProto, error) {
+func (s flowCombinationServer) RpcEmptyRpc(
+	ctx context.Context,
+	req *examples.EmptyProto,
+) (*examples.EmptyProto, error) {
 	return req, nil
 }
 
-func (s flowCombinationServer) RpcEmptyStream(req *examples.EmptyProto, stream examples.FlowCombination_RpcEmptyStreamServer) error {
+func (s flowCombinationServer) RpcEmptyStream(
+	req *examples.EmptyProto,
+	stream examples.FlowCombination_RpcEmptyStreamServer,
+) error {
 	return stream.Send(req)
 }
 
@@ -47,26 +53,44 @@ func (s flowCombinationServer) StreamEmptyStream(stream examples.FlowCombination
 	return stream.Send(new(examples.EmptyProto))
 }
 
-func (s flowCombinationServer) RpcBodyRpc(ctx context.Context, req *examples.NonEmptyProto) (*examples.EmptyProto, error) {
+func (s flowCombinationServer) RpcBodyRpc(
+	ctx context.Context,
+	req *examples.NonEmptyProto,
+) (*examples.EmptyProto, error) {
 	return new(examples.EmptyProto), nil
 }
 
-func (s flowCombinationServer) RpcPathSingleNestedRpc(ctx context.Context, req *examples.SingleNestedProto) (*examples.EmptyProto, error) {
+func (s flowCombinationServer) RpcPathSingleNestedRpc(
+	ctx context.Context,
+	req *examples.SingleNestedProto,
+) (*examples.EmptyProto, error) {
 	return new(examples.EmptyProto), nil
 }
 
-func (s flowCombinationServer) RpcPathNestedRpc(ctx context.Context, req *examples.NestedProto) (*examples.EmptyProto, error) {
+func (s flowCombinationServer) RpcPathNestedRpc(
+	ctx context.Context,
+	req *examples.NestedProto,
+) (*examples.EmptyProto, error) {
 	return new(examples.EmptyProto), nil
 }
 
-func (s flowCombinationServer) RpcBodyStream(req *examples.NonEmptyProto, stream examples.FlowCombination_RpcBodyStreamServer) error {
+func (s flowCombinationServer) RpcBodyStream(
+	req *examples.NonEmptyProto,
+	stream examples.FlowCombination_RpcBodyStreamServer,
+) error {
 	return stream.Send(new(examples.EmptyProto))
 }
 
-func (s flowCombinationServer) RpcPathSingleNestedStream(req *examples.SingleNestedProto, stream examples.FlowCombination_RpcPathSingleNestedStreamServer) error {
+func (s flowCombinationServer) RpcPathSingleNestedStream(
+	req *examples.SingleNestedProto,
+	stream examples.FlowCombination_RpcPathSingleNestedStreamServer,
+) error {
 	return stream.Send(new(examples.EmptyProto))
 }
 
-func (s flowCombinationServer) RpcPathNestedStream(req *examples.NestedProto, stream examples.FlowCombination_RpcPathNestedStreamServer) error {
+func (s flowCombinationServer) RpcPathNestedStream(
+	req *examples.NestedProto,
+	stream examples.FlowCombination_RpcPathNestedStreamServer,
+) error {
 	return stream.Send(new(examples.EmptyProto))
 }

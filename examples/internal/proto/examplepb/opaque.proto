@@ -8,7 +8,7 @@ import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
-option go_package = "github.com/grpc-ecosystem/grpc-gateway/v2/examples/internal/proto/examplepb";
+option go_package = "github.com/kellen-miller/grpc-gateway/v2/examples/internal/proto/examplepb";
 
 // OpaqueEcommerceService provides a comprehensive e-commerce API with various request/response patterns
 service OpaqueEcommerceService {

@@ -9,7 +9,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/httprule"
+	"github.com/kellen-miller/grpc-gateway/v2/internal/httprule"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/health/grpc_health_v1"
@@ -101,7 +101,13 @@ func WithForwardResponseRewriter(fwdResponseRewriter ForwardResponseRewriter) Se
 // http.ResponseWriter, and proto.Message before every forwarded response.
 //
 // The message may be nil in the case where just a header is being sent.
-func WithForwardResponseOption(forwardResponseOption func(context.Context, http.ResponseWriter, proto.Message) error) ServeMuxOption {
+func WithForwardResponseOption(
+	forwardResponseOption func(
+	context.Context,
+	http.ResponseWriter,
+	proto.Message,
+) error,
+) ServeMuxOption {
 	return func(serveMux *ServeMux) {
 		serveMux.forwardResponseOptions = append(serveMux.forwardResponseOptions, forwardResponseOption)
 	}
@@ -164,7 +170,8 @@ func defaultOutgoingTrailerMatcher(key string) (string, bool) {
 // passed to gRPC context. To transform the header before passing to gRPC context, matcher should return the modified header.
 func WithIncomingHeaderMatcher(fn HeaderMatcherFunc) ServeMuxOption {
 	for _, header := range fn.matchedMalformedHeaders() {
-		grpclog.Warningf("The configured forwarding filter would allow %q to be sent to the gRPC server, which will likely cause errors. See https://github.com/grpc/grpc-go/pull/4803#issuecomment-986093310 for more information.", header)
+		grpclog.Warningf("The configured forwarding filter would allow %q to be sent to the gRPC server, which will likely cause errors. See https://github.com/grpc/grpc-go/pull/4803#issuecomment-986093310 for more information.",
+			header)
 	}
 
 	return func(mux *ServeMux) {
@@ -278,7 +285,8 @@ func WithHealthEndpointAt(healthCheckClient grpc_health_v1.HealthClient, endpoin
 	return func(s *ServeMux) {
 		// error can be ignored since pattern is definitely valid
 		_ = s.HandlePath(
-			http.MethodGet, endpointPath, func(w http.ResponseWriter, r *http.Request, _ map[string]string,
+			http.MethodGet, endpointPath, func(
+				w http.ResponseWriter, r *http.Request, _ map[string]string,
 			) {
 				_, outboundMarshaler := MarshalerForRequest(s, r)
 
@@ -319,14 +327,19 @@ func WithHealthzEndpoint(healthCheckClient grpc_health_v1.HealthClient) ServeMux
 // NewServeMux returns a new ServeMux whose internal mapping is empty.
 func NewServeMux(opts ...ServeMuxOption) *ServeMux {
 	serveMux := &ServeMux{
-		handlers:                make(map[string][]handler),
-		forwardResponseOptions:  make([]func(context.Context, http.ResponseWriter, proto.Message) error, 0),
-		forwardResponseRewriter: func(ctx context.Context, response proto.Message) (any, error) { return response, nil },
-		marshalers:              makeMarshalerMIMERegistry(),
-		errorHandler:            DefaultHTTPErrorHandler,
-		streamErrorHandler:      DefaultStreamErrorHandler,
-		routingErrorHandler:     DefaultRoutingErrorHandler,
-		unescapingMode:          UnescapingModeDefault,
+		handlers:               make(map[string][]handler),
+		forwardResponseOptions: make([]func(context.Context, http.ResponseWriter, proto.Message) error, 0),
+		forwardResponseRewriter: func(
+			ctx context.Context,
+			response proto.Message,
+		) (any, error) {
+			return response, nil
+		},
+		marshalers:          makeMarshalerMIMERegistry(),
+		errorHandler:        DefaultHTTPErrorHandler,
+		streamErrorHandler:  DefaultStreamErrorHandler,
+		routingErrorHandler: DefaultRoutingErrorHandler,
+		unescapingMode:      UnescapingModeDefault,
 	}
 
 	for _, opt := range opts {
